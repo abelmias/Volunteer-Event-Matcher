@@ -1,1 +1,83 @@
-frontend/.angular/cache/14.2.13/angular-webpack/517265ab02e864f983576229f3f592294b82f15e/0.pack
+=== Default Java/Spring Boot Ignore ===
+
+/target/
+/.idea/
+.mvn/wrapper/maven-wrapper.jar
+/logs/
+*.log
+*.class
+
+Maven
+
+pom.xml.tag
+pom.xml.bak
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-check-report.html
+dependency-check-report.xml
+
+IntelliJ IDEA
+
+.idea/
+*.iws
+*.iml
+*.ipr
+
+Maven target directories
+
+target/
+!/src/main//target/
+!/src/test//target/
+
+=== Default Node/Angular Ignore ===
+
+Dependency directories
+
+/frontend/node_modules/
+
+Build artifacts
+
+/frontend/dist/
+
+Angular cache - CRITICAL FIX
+
+/frontend/.angular/cache/
+
+Compiled TypeScript files
+
+/frontend//*.js
+/frontend//*.map
+
+VS Code
+
+.vscode/
+
+Environment files
+
+/frontend/src/environments/environment.prod.ts
+
+# Documentation & Temporary Files
+ACTION_PLAN_FINAL.md
+APPLY_BUTTON_DEBUG.md
+APPLY_BUTTON_FIX.md
+COMPILATION_ERRORS_FIXED.md
+COMPLETE_TESTING_GUIDE.md
+DASHBOARD_ROUTING_FIX.md
+DATABASE_ERD.puml
+DATABASE_SCHEMA.md
+DUAL_ACTION_IMPLEMENTATION.md
+FRONTEND_QUICK_START.md
+IMPLEMENTATION_SUMMARY.md
+LOGIN_ERROR_FIX.md
+NEXT_STEPS.md
+PENDING_SUBMISSIONS_FIX.md
+PROJECT_DOCUMENTATION.md
+QUICK_REFERENCE.md
+REMAINING_WORK.md
+SPRINT_*.md
+TESTING_*.md
+TRACE_COMPLETE_CHAIN.md
+TRELLO_QUICK_REFERENCE.md
+VOLUNTEER_*.md
+plantUML for volunteer even matcher.png
