@@ -1,0 +1,181 @@
+<div class="advanced-filter-container">
+  <!-- Main Filter Bar -->
+  <div class="filter-bar">
+    <form [formGroup]="filterForm" class="filter-form">
+      <!-- Search Term -->
+      <div class="filter-group">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Search events..."
+          formControlName="searchTerm"
+          (keyup)="applyFilters()"
+        />
+      </div>
+
+      <!-- Location with Suggestions -->
+      <div class="filter-group location-group">
+        <div class="location-input-wrapper">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Location"
+            formControlName="location"
+            (keyup)="onLocationChange($event.target.value)"
+            (blur)="closeLocationSuggestions()"
+          />
+          <span *ngIf="loading" class="spinner-small">⏳</span>
+        </div>
+        <!-- Location Suggestions Dropdown -->
+        <div *ngIf="showLocationSuggestions && locationSuggestions.length > 0" class="suggestions-dropdown">
+          <div
+            *ngFor="let suggestion of locationSuggestions"
+            class="suggestion-item"
+            (click)="selectLocationSuggestion(suggestion)"
+          >
+            <span class="suggestion-icon">📍</span>
+            <span class="suggestion-text">{{ suggestion.name }}</span>
+            <span *ngIf="suggestion.distance" class="suggestion-distance">
+              {{ suggestion.distance | number:'1.1-1' }} km
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Event Type -->
+      <div class="filter-group">
+        <select
+          class="form-select"
+          formControlName="eventType"
+          (change)="applyFilters()"
+        >
+          <option value="">All Types</option>
+          <option *ngFor="let type of eventTypes" [value]="type">{{ type }}</option>
+        </select>
+      </div>
+
+      <!-- Sort Options -->
+      <div class="filter-group">
+        <select
+          class="form-select"
+          formControlName="sortBy"
+          (change)="applyFilters()"
+        >
+          <option *ngFor="let option of sortOptions" [value]="option.value">
+            {{ option.label }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Advanced Filters Toggle -->
+      <button
+        type="button"
+        class="btn btn-outline-secondary"
+        (click)="toggleAdvancedFilters()"
+      >
+        ⚙️ Advanced
+      </button>
+
+      <!-- Apply/Reset Buttons -->
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="applyFilters()"
+      >
+        🔍 Search
+      </button>
+      <button
+        type="button"
+        class="btn btn-outline-secondary"
+        (click)="resetFilters()"
+      >
+        ↺ Reset
+      </button>
+    </form>
+  </div>
+
+  <!-- Advanced Filters Panel -->
+  <div *ngIf="showAdvancedFilters" class="advanced-filters-panel">
+    <div class="advanced-filters-content">
+      <h6>Advanced Filters</h6>
+
+      <!-- Date Range -->
+      <div class="filter-section">
+        <label class="filter-label">Date Range</label>
+        <div class="date-range">
+          <input
+            type="date"
+            class="form-control"
+            formControlName="minDate"
+            (change)="applyFilters()"
+          />
+          <span class="date-separator">to</span>
+          <input
+            type="date"
+            class="form-control"
+            formControlName="maxDate"
+            (change)="applyFilters()"
+          />
+        </div>
+      </div>
+
+      <!-- Volunteers Range -->
+      <div class="filter-section">
+        <label class="filter-label">Volunteers Needed</label>
+        <div class="range-inputs">
+          <input
+            type="number"
+            class="form-control"
+            placeholder="Min"
+            formControlName="minVolunteers"
+            min="0"
+            (change)="applyFilters()"
+          />
+          <span class="range-separator">-</span>
+          <input
+            type="number"
+            class="form-control"
+            placeholder="Max"
+            formControlName="maxVolunteers"
+            min="0"
+            (change)="applyFilters()"
+          />
+        </div>
+      </div>
+
+      <!-- Sort Order -->
+      <div class="filter-section">
+        <label class="filter-label">Sort Order</label>
+        <div class="sort-order">
+          <label class="radio-label">
+            <input
+              type="radio"
+              value="asc"
+              formControlName="sortOrder"
+              (change)="applyFilters()"
+            />
+            Ascending
+          </label>
+          <label class="radio-label">
+            <input
+              type="radio"
+              value="desc"
+              formControlName="sortOrder"
+              (change)="applyFilters()"
+            />
+            Descending
+          </label>
+        </div>
+      </div>
+
+      <!-- Close Button -->
+      <button
+        type="button"
+        class="btn btn-sm btn-outline-secondary"
+        (click)="toggleAdvancedFilters()"
+      >
+        ✕ Close
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,202 @@
+<div class="volunteer-profile-container">
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a class="navbar-brand" href="javascript:void(0)" (click)="goBack()">Voluntra</a>
+      <div class="navbar-links">
+        <button class="nav-btn" (click)="goBack()">← Back to Dashboard</button>
+        <button class="nav-btn" (click)="logout()">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Welcome Section -->
+  <div class="welcome-section">
+    <div class="welcome-container">
+      <div class="welcome-content">
+        <h1 class="welcome-title">My Profile</h1>
+        <p class="welcome-subtitle">Manage Your Information</p>
+        <p class="welcome-description">View and update your volunteer profile details</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="profile-container">
+    <!-- Success/Error Messages -->
+    <div *ngIf="successMessage" class="alert alert-success">
+      {{ successMessage }}
+    </div>
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+
+    <!-- Profile Card -->
+    <div class="card shadow-sm border-0">
+      <div class="card-header border-bottom">
+        <div class="header-content">
+          <h5 class="mb-0">Profile Information</h5>
+          <button 
+            *ngIf="!isEditing"
+            class="btn btn-primary btn-sm" 
+            (click)="toggleEdit()">
+            ✏️ Edit Profile
+          </button>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <!-- View Mode -->
+        <div *ngIf="!isEditing" class="profile-view">
+          <div class="profile-section">
+            <h6 class="section-title">Personal Information</h6>
+            <div class="info-grid">
+              <div class="info-item">
+                <label>First Name</label>
+                <p>{{ profileForm.firstName || 'Not provided' }}</p>
+              </div>
+              <div class="info-item">
+                <label>Last Name</label>
+                <p>{{ profileForm.lastName || 'Not provided' }}</p>
+              </div>
+              <div class="info-item">
+                <label>Email</label>
+                <p>{{ profileForm.email || 'Not provided' }}</p>
+              </div>
+              <div class="info-item">
+                <label>Phone</label>
+                <p>{{ profileForm.phone || 'Not provided' }}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-section">
+            <h6 class="section-title">Volunteer Details</h6>
+            <div class="info-item full-width">
+              <label>Bio</label>
+              <p>{{ profileForm.bio || 'Not provided' }}</p>
+            </div>
+            <div class="info-grid">
+              <div class="info-item">
+                <label>Skills</label>
+                <p>{{ profileForm.skills || 'Not provided' }}</p>
+              </div>
+              <div class="info-item">
+                <label>Availability</label>
+                <p>{{ profileForm.availability || 'Not provided' }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Edit Mode -->
+        <div *ngIf="isEditing" class="profile-edit">
+          <form>
+            <div class="form-section">
+              <h6 class="section-title">Personal Information</h6>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="firstName">First Name</label>
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    id="firstName"
+                    [(ngModel)]="profileForm.firstName"
+                    name="firstName">
+                </div>
+                <div class="form-group">
+                  <label for="lastName">Last Name</label>
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    id="lastName"
+                    [(ngModel)]="profileForm.lastName"
+                    name="lastName">
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="email">Email</label>
+                  <input 
+                    type="email" 
+                    class="form-control" 
+                    id="email"
+                    [(ngModel)]="profileForm.email"
+                    name="email">
+                </div>
+                <div class="form-group">
+                  <label for="phone">Phone</label>
+                  <input 
+                    type="tel" 
+                    class="form-control" 
+                    id="phone"
+                    [(ngModel)]="profileForm.phone"
+                    name="phone">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h6 class="section-title">Volunteer Details</h6>
+              <div class="form-group">
+                <label for="bio">Bio</label>
+                <textarea 
+                  class="form-control" 
+                  id="bio"
+                  rows="4"
+                  [(ngModel)]="profileForm.bio"
+                  name="bio"
+                  placeholder="Tell us about yourself..."></textarea>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="skills">Skills</label>
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    id="skills"
+                    [(ngModel)]="profileForm.skills"
+                    name="skills"
+                    placeholder="e.g., Teaching, Mentoring, Coding">
+                </div>
+                <div class="form-group">
+                  <label for="availability">Availability</label>
+                  <select 
+                    class="form-control" 
+                    id="availability"
+                    [(ngModel)]="profileForm.availability"
+                    name="availability">
+                    <option value="">Select availability</option>
+                    <option value="Weekdays">Weekdays</option>
+                    <option value="Weekends">Weekends</option>
+                    <option value="Flexible">Flexible</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="form-actions">
+              <button 
+                type="button" 
+                class="btn btn-primary"
+                [disabled]="loading"
+                (click)="saveProfile()">
+                {{ loading ? 'Saving...' : '💾 Save Changes' }}
+              </button>
+              <button 
+                type="button" 
+                class="btn btn-outline-secondary"
+                [disabled]="loading"
+                (click)="cancelEdit()">
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,93 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-info">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-bold" href="javascript:void(0)">Notifications</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <span class="nav-link">{{ currentUser?.username }}</span>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="javascript:void(0)" (click)="goBack()">Back</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-5 mb-5">
+  <!-- Actions -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <button class="btn btn-info me-2" (click)="markAllAsRead()">
+        ✓ Mark All as Read
+      </button>
+      <button class="btn btn-outline-danger" (click)="deleteAllNotifications()">
+        🗑️ Delete All
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-info" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-3 text-muted">Loading notifications...</p>
+  </div>
+
+  <!-- Notifications List -->
+  <div *ngIf="!loading" class="row">
+    <div *ngIf="notifications.length === 0" class="col-12">
+      <div class="alert alert-info text-center py-5">
+        <h5>No notifications</h5>
+        <p>You're all caught up!</p>
+      </div>
+    </div>
+
+    <div *ngFor="let notification of notifications" class="col-12 mb-3">
+      <div 
+        class="card notification-card"
+        [class.unread]="!notification.read"
+      >
+        <div class="card-body">
+          <div class="row align-items-center">
+            <div class="col-md-9">
+              <h5 class="card-title">{{ notification.title }}</h5>
+              <p class="card-text">{{ notification.message }}</p>
+              <small class="text-muted">
+                📅 {{ notification.createdAt }}
+              </small>
+            </div>
+            <div class="col-md-3 text-end">
+              <button 
+                *ngIf="!notification.read"
+                class="btn btn-sm btn-info me-2"
+                (click)="markAsRead(notification.id)"
+              >
+                ✓ Mark Read
+              </button>
+              <button 
+                class="btn btn-sm btn-danger"
+                (click)="deleteNotification(notification.id)"
+              >
+                🗑️ Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Summary -->
+  <div *ngIf="!loading && notifications.length > 0" class="row mt-5">
+    <div class="col-12">
+      <p class="text-muted">
+        Total notifications: {{ notifications.length }}
+      </p>
+    </div>
+  </div>
+</div>

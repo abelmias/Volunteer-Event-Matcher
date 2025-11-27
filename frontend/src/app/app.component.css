@@ -1,0 +1,76 @@
+h1 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+p {
+  font-size: 16px;
+  color: #666;
+}
+
+.hero-section {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 60px 0;
+}
+
+.hero-section h1 {
+  color: white;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.hero-section .lead {
+  font-size: 1.3rem;
+  margin-bottom: 30px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.hero-section .btn {
+  font-size: 1.1rem;
+  padding: 12px 30px;
+}
+
+.hero-section .btn-primary {
+  background-color: #fff;
+  border-color: #fff;
+  color: #667eea;
+}
+
+.hero-section .btn-primary:hover {
+  background-color: #f0f0f0;
+  border-color: #f0f0f0;
+}
+
+.hero-section .btn-outline-primary {
+  color: #fff;
+  border-color: #fff;
+}
+
+.hero-section .btn-outline-primary:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: #fff;
+}
+
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+}
+
+.card-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #667eea;
+}
+
+.navbar {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.min-vh-100 {
+  min-height: 100vh;
+}

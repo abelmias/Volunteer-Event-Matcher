@@ -1,0 +1,332 @@
+<!-- Analytics Dashboard -->
+<div class="analytics-container">
+  <!-- Header -->
+  <div class="analytics-header">
+    <h2>📊 Analytics Dashboard</h2>
+    <div class="header-controls">
+      <div class="period-selector">
+        <button 
+          *ngFor="let period of [7, 30, 90]"
+          class="btn btn-sm"
+          [class.active]="selectedPeriod === period"
+          (click)="changePeriod(period)"
+        >
+          {{ period }} days
+        </button>
+      </div>
+      <button class="btn btn-primary btn-sm" (click)="refreshAnalytics()">
+        🔄 Refresh
+      </button>
+    </div>
+  </div>
+
+  <!-- Error Alert -->
+  <div *ngIf="error" class="alert alert-danger alert-dismissible fade show">
+    {{ error }}
+    <button type="button" class="btn-close" (click)="error = ''"></button>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-3 text-muted">Loading analytics...</p>
+  </div>
+
+  <!-- Content -->
+  <div *ngIf="!loading">
+    <!-- Tab Navigation -->
+    <ul class="nav nav-tabs mb-4" role="tablist">
+      <li class="nav-item">
+        <button 
+          class="nav-link" 
+          [class.active]="activeTab === 'overview'"
+          (click)="switchTab('overview')"
+        >
+          📈 Overview
+        </button>
+      </li>
+      <li class="nav-item">
+        <button 
+          class="nav-link" 
+          [class.active]="activeTab === 'events'"
+          (click)="switchTab('events')"
+        >
+          📅 Events
+        </button>
+      </li>
+      <li class="nav-item">
+        <button 
+          class="nav-link" 
+          [class.active]="activeTab === 'applications'"
+          (click)="switchTab('applications')"
+        >
+          📝 Applications
+        </button>
+      </li>
+      <li class="nav-item">
+        <button 
+          class="nav-link" 
+          [class.active]="activeTab === 'volunteers'"
+          (click)="switchTab('volunteers')"
+        >
+          👥 Volunteers
+        </button>
+      </li>
+      <li class="nav-item">
+        <button 
+          class="nav-link" 
+          [class.active]="activeTab === 'skills'"
+          (click)="switchTab('skills')"
+        >
+          🎯 Skills
+        </button>
+      </li>
+    </ul>
+
+    <!-- Overview Tab -->
+    <div *ngIf="activeTab === 'overview'" class="tab-content">
+      <div class="row">
+        <!-- Event Stats -->
+        <div class="col-md-3 mb-4">
+          <div class="metric-card">
+            <div class="metric-icon">📅</div>
+            <div class="metric-value">{{ eventAnalytics?.totalEvents || 0 }}</div>
+            <div class="metric-label">Total Events</div>
+          </div>
+        </div>
+
+        <!-- Published Events -->
+        <div class="col-md-3 mb-4">
+          <div class="metric-card">
+            <div class="metric-icon">✅</div>
+            <div class="metric-value">{{ eventAnalytics?.publishedEvents || 0 }}</div>
+            <div class="metric-label">Published</div>
+          </div>
+        </div>
+
+        <!-- Total Applications -->
+        <div class="col-md-3 mb-4">
+          <div class="metric-card">
+            <div class="metric-icon">📝</div>
+            <div class="metric-value">{{ applicationAnalytics?.totalApplications || 0 }}</div>
+            <div class="metric-label">Applications</div>
+          </div>
+        </div>
+
+        <!-- Approval Rate -->
+        <div class="col-md-3 mb-4">
+          <div class="metric-card">
+            <div class="metric-icon">✔️</div>
+            <div class="metric-value">{{ getApprovalRate() }}%</div>
+            <div class="metric-label">Approval Rate</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Volunteer Progress -->
+      <div class="row mt-4">
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Volunteer Recruitment</h5>
+              <div class="progress" style="height: 25px;">
+                <div 
+                  class="progress-bar bg-success" 
+                  [style.width.%]="getVolunteerPercentage()"
+                >
+                  {{ getVolunteerPercentage() }}%
+                </div>
+              </div>
+              <small class="text-muted mt-2 d-block">
+                {{ eventAnalytics?.totalVolunteersConfirmed || 0 }} / {{ eventAnalytics?.totalVolunteersNeeded || 0 }} volunteers
+              </small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Application Status -->
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Application Status</h5>
+              <div class="row text-center">
+                <div class="col-4">
+                  <div class="status-box pending">
+                    <div class="status-number">{{ applicationAnalytics?.pendingApplications || 0 }}</div>
+                    <div class="status-label">Pending</div>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="status-box approved">
+                    <div class="status-number">{{ applicationAnalytics?.approvedApplications || 0 }}</div>
+                    <div class="status-label">Approved</div>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="status-box rejected">
+                    <div class="status-number">{{ applicationAnalytics?.rejectedApplications || 0 }}</div>
+                    <div class="status-label">Rejected</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Events Tab -->
+    <div *ngIf="activeTab === 'events'" class="tab-content">
+      <div class="row">
+        <div class="col-md-4 mb-4">
+          <div class="stat-card">
+            <div class="stat-label">Total Events</div>
+            <div class="stat-value">{{ eventAnalytics?.totalEvents || 0 }}</div>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <div class="stat-card">
+            <div class="stat-label">Published</div>
+            <div class="stat-value">{{ eventAnalytics?.publishedEvents || 0 }}</div>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <div class="stat-card">
+            <div class="stat-label">Draft</div>
+            <div class="stat-value">{{ eventAnalytics?.draftEvents || 0 }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Volunteers Needed vs Confirmed</h5>
+              <p class="text-muted">Needed: {{ eventAnalytics?.totalVolunteersNeeded || 0 }}</p>
+              <p class="text-muted">Confirmed: {{ eventAnalytics?.totalVolunteersConfirmed || 0 }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Export Options</h5>
+              <button class="btn btn-sm btn-outline-primary me-2" (click)="exportCSV('events')">
+                📥 Export CSV
+              </button>
+              <button class="btn btn-sm btn-outline-primary" (click)="exportPDF('events')">
+                📄 Export PDF
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Applications Tab -->
+    <div *ngIf="activeTab === 'applications'" class="tab-content">
+      <div class="row">
+        <div class="col-md-3 mb-4">
+          <div class="stat-card">
+            <div class="stat-label">Total</div>
+            <div class="stat-value">{{ applicationAnalytics?.totalApplications || 0 }}</div>
+          </div>
+        </div>
+        <div class="col-md-3 mb-4">
+          <div class="stat-card">
+            <div class="stat-label">Pending</div>
+            <div class="stat-value">{{ applicationAnalytics?.pendingApplications || 0 }}</div>
+          </div>
+        </div>
+        <div class="col-md-3 mb-4">
+          <div class="stat-card">
+            <div class="stat-label">Approved</div>
+            <div class="stat-value">{{ applicationAnalytics?.approvedApplications || 0 }}</div>
+          </div>
+        </div>
+        <div class="col-md-3 mb-4">
+          <div class="stat-card">
+            <div class="stat-label">Rejected</div>
+            <div class="stat-value">{{ applicationAnalytics?.rejectedApplications || 0 }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Application Trends</h5>
+          <p class="text-muted">Approval Rate: {{ getApprovalRate() }}%</p>
+          <button class="btn btn-sm btn-outline-primary me-2" (click)="exportCSV('applications')">
+            📥 Export CSV
+          </button>
+          <button class="btn btn-sm btn-outline-primary" (click)="exportPDF('applications')">
+            📄 Export PDF
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Volunteers Tab -->
+    <div *ngIf="activeTab === 'volunteers'" class="tab-content">
+      <div class="row">
+        <div class="col-md-4 mb-4">
+          <div class="stat-card">
+            <div class="stat-label">Total Volunteers</div>
+            <div class="stat-value">{{ volunteerAnalytics?.totalVolunteers || 0 }}</div>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <div class="stat-card">
+            <div class="stat-label">Active</div>
+            <div class="stat-value">{{ volunteerAnalytics?.activeVolunteers || 0 }}</div>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <div class="stat-card">
+            <div class="stat-label">Avg Rating</div>
+            <div class="stat-value">{{ volunteerAnalytics?.averageRating?.toFixed(1) || 0 }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Total Hours Contributed</h5>
+          <p class="stat-value">{{ volunteerAnalytics?.totalHoursContributed || 0 }} hours</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Skills Tab -->
+    <div *ngIf="activeTab === 'skills'" class="tab-content">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Skill Demand</h5>
+          <div *ngIf="skillDemand && skillDemand.length > 0" class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Skill</th>
+                  <th>Demand</th>
+                  <th>Avg Proficiency</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let skill of skillDemand">
+                  <td>{{ skill.skillName }}</td>
+                  <td>
+                    <span class="badge bg-primary">{{ skill.demandCount }}</span>
+                  </td>
+                  <td>{{ skill.averageProficiency }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div *ngIf="!skillDemand || skillDemand.length === 0" class="alert alert-info">
+            No skill demand data available
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

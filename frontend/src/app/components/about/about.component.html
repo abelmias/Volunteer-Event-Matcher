@@ -1,0 +1,86 @@
+<!-- Navigation Bar -->
+<nav class="navbar">
+  <div class="navbar-container">
+    <a class="navbar-brand" href="javascript:void(0)" routerLink="/">{{ title }}</a>
+    <div class="navbar-links">
+      <a class="nav-link" href="javascript:void(0)" routerLink="/">Home</a>
+      <a class="nav-link nav-login" href="javascript:void(0)" routerLink="/auth/login">Login</a>
+    </div>
+  </div>
+</nav>
+
+<!-- About Section -->
+<section class="about-section">
+  <div class="about-container">
+    <!-- Header -->
+    <div class="about-header">
+      <h1 class="about-title">About {{ title }}</h1>
+      <p class="about-tagline">Connecting volunteers with meaningful opportunities</p>
+    </div>
+
+    <!-- Abstract -->
+    <div class="about-abstract">
+      <h2 class="section-heading">Our Mission</h2>
+      <p class="abstract-text">
+        Voluntra is a comprehensive volunteer event matching platform designed to bridge the gap between passionate 
+        volunteers and organizations seeking meaningful community impact. Our mission is to make volunteering accessible, 
+        rewarding, and impactful by connecting individuals with causes they care about.
+      </p>
+      <p class="abstract-text">
+        We believe that every person has the potential to make a difference in their community. Whether you're looking 
+        to volunteer your time and skills or organize community events, Voluntra provides the tools and connections 
+        you need to create positive change.
+      </p>
+    </div>
+
+    <!-- Developers -->
+    <div class="developers-section">
+      <h2 class="section-heading">Meet the Team</h2>
+      <div class="developers-grid">
+        <div class="developer-card" *ngFor="let dev of developers">
+          <div class="developer-avatar">
+            <img [src]="dev.avatarUrl" [alt]="dev.name" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+          </div>
+          <h3 class="developer-name">{{ dev.name }}</h3>
+          <p class="developer-role">{{ dev.role }}</p>
+          <a [href]="'mailto:' + dev.email" class="developer-email">{{ dev.email }}</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact Section -->
+    <div class="contact-section">
+      <h2 class="section-heading">Get in Touch</h2>
+      <p class="contact-description">
+        Have questions or feedback about Voluntra? We'd love to hear from you!
+      </p>
+      <div class="contact-info">
+        <div class="contact-item">
+          <h3 class="contact-label">Email</h3>
+          <a [href]="'mailto:' + contactEmail" class="contact-link">{{ contactEmail }}</a>
+        </div>
+        <div class="contact-item">
+          <h3 class="contact-label">Support</h3>
+          <p class="contact-text">For technical support or feature requests, please reach out via email.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div class="cta-section">
+      <h2 class="cta-title">Ready to Make a Difference?</h2>
+      <p class="cta-subtitle">Join thousands of volunteers and organizations making an impact</p>
+      <div class="cta-buttons">
+        <button class="btn btn-primary" routerLink="/auth/register">Get Started</button>
+        <button class="btn btn-secondary" routerLink="/">Back to Home</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-container">
+    <p>&copy; 2025 {{ title }}. All rights reserved.</p>
+  </div>
+</footer>

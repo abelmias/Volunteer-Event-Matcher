@@ -1,0 +1,173 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-success">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-bold" href="javascript:void(0)">Volunteer Applications</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="javascript:void(0)" (click)="goToDashboard()">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <span class="nav-link">{{ currentUser?.username }}</span>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="javascript:void(0)" (click)="logout()">Logout</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-5">
+  <!-- Status Filter -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="btn-group" role="group">
+        <button 
+          type="button" 
+          class="btn btn-outline-success"
+          [class.active]="statusFilter === 'PENDING'"
+          (click)="filterByStatus('PENDING')"
+        >
+          📋 Pending
+        </button>
+        <button 
+          type="button" 
+          class="btn btn-outline-success"
+          [class.active]="statusFilter === 'APPROVED'"
+          (click)="filterByStatus('APPROVED')"
+        >
+          ✅ Approved
+        </button>
+        <button 
+          type="button" 
+          class="btn btn-outline-success"
+          [class.active]="statusFilter === 'REJECTED'"
+          (click)="filterByStatus('REJECTED')"
+        >
+          ❌ Rejected
+        </button>
+        <button 
+          type="button" 
+          class="btn btn-outline-success"
+          [class.active]="statusFilter === 'ALL'"
+          (click)="filterByStatus('ALL')"
+        >
+          📊 All
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-success" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-3 text-muted">Loading applications...</p>
+  </div>
+
+  <!-- Applications List -->
+  <div *ngIf="!loading" class="row">
+    <div *ngIf="filteredApplications.length === 0" class="col-12">
+      <div class="alert alert-info text-center py-5">
+        <h5>No applications found</h5>
+        <p>No volunteer applications for the selected status</p>
+      </div>
+    </div>
+
+    <div *ngFor="let app of filteredApplications" class="col-12 mb-3">
+      <div class="card shadow-sm application-card">
+        <div class="card-body">
+          <div class="row align-items-center">
+            <div class="col-md-7">
+              <h5 class="card-title">{{ app.volunteerName }}</h5>
+              <p class="card-text text-muted mb-2">
+                <strong>📧 Email:</strong> {{ app.volunteerEmail }}
+              </p>
+              <p class="card-text text-muted mb-2">
+                <strong>📅 Event:</strong> {{ app.eventTitle }}
+              </p>
+              <p class="card-text text-muted mb-0">
+                <strong>📝 Applied:</strong> {{ app.appliedDate }}
+              </p>
+            </div>
+            <div class="col-md-5">
+              <div class="status-badge mb-3">
+                <span 
+                  class="badge"
+                  [ngClass]="{
+                    'bg-warning': app.status === 'PENDING',
+                    'bg-success': app.status === 'APPROVED',
+                    'bg-danger': app.status === 'REJECTED'
+                  }"
+                >
+                  {{ app.status }}
+                </span>
+              </div>
+
+              <div *ngIf="app.status === 'PENDING'" class="btn-group w-100" role="group">
+                <button 
+                  type="button" 
+                  class="btn btn-sm btn-success"
+                  (click)="approveApplication(app.id)"
+                >
+                  ✅ Approve
+                </button>
+                <button 
+                  type="button" 
+                  class="btn btn-sm btn-danger"
+                  (click)="rejectApplication(app.id)"
+                >
+                  ❌ Reject
+                </button>
+              </div>
+
+              <div *ngIf="app.status !== 'PENDING'" class="text-muted text-center">
+                <small>{{ app.status === 'APPROVED' ? '✓ Approved' : '✗ Rejected' }}</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Summary Stats -->
+  <div *ngIf="!loading && applications.length > 0" class="row mt-5 mb-5">
+    <div class="col-md-3 mb-3">
+      <div class="card text-center shadow-sm">
+        <div class="card-body">
+          <p class="text-muted mb-1">Pending</p>
+          <p class="display-6 text-warning">{{ getPendingCount() }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 mb-3">
+      <div class="card text-center shadow-sm">
+        <div class="card-body">
+          <p class="text-muted mb-1">Approved</p>
+          <p class="display-6 text-success">{{ getApprovedCount() }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 mb-3">
+      <div class="card text-center shadow-sm">
+        <div class="card-body">
+          <p class="text-muted mb-1">Rejected</p>
+          <p class="display-6 text-danger">{{ getRejectedCount() }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 mb-3">
+      <div class="card text-center shadow-sm">
+        <div class="card-body">
+          <p class="text-muted mb-1">Total</p>
+          <p class="display-6 text-info">{{ applications.length }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,154 @@
+<div class="admin-dashboard-container">
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a class="navbar-brand" href="javascript:void(0)">Voluntra</a>
+      <div class="navbar-links">
+        <span class="nav-user">{{ currentUser?.username }}</span>
+        <button class="nav-btn" (click)="logout()">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Welcome Section -->
+  <div class="welcome-section">
+    <div class="welcome-container">
+      <div class="welcome-content">
+        <h1 class="welcome-title">Admin Dashboard</h1>
+        <p class="welcome-subtitle">Manage Events & Applications</p>
+        <p class="welcome-description">Review volunteer submissions, approve events, and manage the platform</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="dashboard-container">
+    <!-- Alerts -->
+    <div *ngIf="error" class="alert alert-error">
+      {{ error }}
+      <button class="alert-close" (click)="error = ''">×</button>
+    </div>
+    <div *ngIf="success" class="alert alert-success">
+      {{ success }}
+      <button class="alert-close" (click)="success = ''">×</button>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="loading" class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading dashboard data...</p>
+    </div>
+
+    <!-- Dashboard Content -->
+    <div *ngIf="!loading">
+      <!-- Tab Navigation -->
+      <div class="tab-navigation">
+        <button 
+          class="tab-btn"
+          [class.active]="activeTab === 'overview'"
+          (click)="switchToOverviewTab()">
+          Overview
+        </button>
+        <button 
+          class="tab-btn"
+          [class.active]="activeTab === 'events'"
+          (click)="switchToEventsTab()">
+          Events ({{ totalEvents }})
+        </button>
+        <button 
+          class="tab-btn"
+          [class.active]="activeTab === 'applications'"
+          (click)="switchToApplicationsTab()">
+          Applications ({{ totalApplications }})
+        </button>
+      </div>
+
+      <!-- Overview Tab -->
+      <div *ngIf="activeTab === 'overview'" class="tab-content">
+        <!-- Statistics Grid -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Total Events</div>
+            <div class="stat-value">{{ totalEvents }}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Published</div>
+            <div class="stat-value">{{ publishedEvents }}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Draft</div>
+            <div class="stat-value">{{ draftEvents }}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Applications</div>
+            <div class="stat-value">{{ totalApplications }}</div>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+          <button class="btn btn-primary" (click)="createNewEvent()">
+            Create New Event
+          </button>
+        </div>
+      </div>
+
+      <!-- Events Tab -->
+      <div *ngIf="activeTab === 'events'" class="tab-content">
+        <div class="section-header">
+          <h3>Manage Events</h3>
+          <button class="btn btn-primary" (click)="createNewEvent()">
+            Create New Event
+          </button>
+        </div>
+
+        <!-- Events List -->
+        <div class="card shadow-sm border-0">
+          <div class="card-body p-0">
+            <div *ngIf="events.length === 0" class="empty-state">
+              <p>No events found</p>
+            </div>
+            <div *ngFor="let event of events" class="event-item">
+              <div class="event-header">
+                <h6 class="event-title">{{ event.title }}</h6>
+                <span class="event-status" [class]="'status-' + (event.status | lowercase)">
+                  {{ event.status }}
+                </span>
+              </div>
+              <p class="event-description">{{ event.description }}</p>
+              <div class="event-meta">
+                <span>{{ event.location }}</span>
+                <span>{{ event.volunteersNeeded }} volunteers needed</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Applications Tab -->
+      <div *ngIf="activeTab === 'applications'" class="tab-content">
+        <div class="section-header">
+          <h3>Review Applications</h3>
+        </div>
+
+        <!-- Applications List -->
+        <div class="card shadow-sm border-0">
+          <div class="card-body p-0">
+            <div *ngIf="pendingApplications.length === 0" class="empty-state">
+              <p>No applications yet</p>
+            </div>
+            <div *ngFor="let app of pendingApplications" class="application-item">
+              <div class="app-header">
+                <h6 class="app-title">{{ app.eventTitle }}</h6>
+                <span class="app-status" [class]="'status-' + (app.status | lowercase)">
+                  {{ app.status }}
+                </span>
+              </div>
+              <p class="app-volunteer">Volunteer: {{ app.volunteerName }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

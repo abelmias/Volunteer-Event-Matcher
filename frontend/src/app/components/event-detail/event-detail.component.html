@@ -1,0 +1,185 @@
+<div class="event-detail-container">
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a class="navbar-brand" href="javascript:void(0)" routerLink="/">Voluntra</a>
+      <div class="navbar-links">
+        <button class="nav-btn" (click)="goToProfile()">Profile</button>
+        <button class="nav-btn" (click)="logout()">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="container py-5 text-center">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <!-- Event Detail Content -->
+  <div *ngIf="!loading && event" class="event-content">
+    <!-- Back Button -->
+    <div class="back-button-container">
+      <button class="btn-back-events" (click)="goBack()">← Back to Events</button>
+    </div>
+
+    <!-- Error Alert -->
+    <div *ngIf="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+      {{ error }}
+      <button type="button" class="btn-close" (click)="error = ''"></button>
+    </div>
+
+    <!-- Success Alert -->
+    <div *ngIf="success" class="alert alert-success alert-dismissible fade show" role="alert">
+      {{ success }}
+      <button type="button" class="btn-close" (click)="success = ''"></button>
+    </div>
+
+    <div class="row">
+      <!-- Main Content -->
+      <div class="col-lg-8">
+        <!-- Event Header -->
+        <div class="event-header mb-4">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+              <span class="badge bg-{{ getEventTypeColor(event.eventType) }} mb-2">
+                {{ event.eventType }}
+              </span>
+              <h1 class="display-5 fw-bold">{{ event.title }}</h1>
+            </div>
+          </div>
+
+          <!-- Event Image -->
+          <div *ngIf="event.imageUrl" class="event-image mb-4">
+            <img [src]="event.imageUrl" [alt]="event.title" class="img-fluid rounded" style="max-height: 400px; object-fit: cover; width: 100%;">
+          </div>
+        </div>
+
+        <!-- Event Description -->
+        <div class="event-description mb-4">
+          <h3 class="mb-3">About This Event</h3>
+          <p class="lead">{{ event.description }}</p>
+        </div>
+
+        <!-- Event Details Grid -->
+        <div class="event-details-grid mb-4">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="detail-card p-3">
+                <h6 class="mb-2">Date & Time</h6>
+                <p class="mb-0 fw-bold">{{ formatDate(event.eventDate) }}</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="detail-card p-3">
+                <h6 class="mb-2">Duration</h6>
+                <p class="mb-0 fw-bold">{{ event.durationHours }} hours</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="detail-card p-3">
+                <h6 class="mb-2">Volunteers Needed</h6>
+                <p class="mb-0 fw-bold">
+                  {{ getVolunteersSlotsRemaining() }} of {{ event.volunteersNeeded }} slots available
+                </p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="detail-card p-3">
+                <h6 class="mb-2">Organizer</h6>
+                <p class="mb-0 fw-bold">{{ event.organizerName }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Map Section -->
+        <div class="map-section mb-4">
+          <h3 class="mb-3">Location</h3>
+          <p class="mb-3">{{ event.location }}</p>
+          <div id="event-map" class="rounded" style="height: 400px;"></div>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="col-lg-4">
+        <!-- Application Card -->
+        <div class="card shadow-sm mb-4 sticky-top" style="top: 20px;">
+          <div class="card-body">
+            <h5 class="card-title mb-3">Ready to Volunteer?</h5>
+
+            <div *ngIf="isEventPassed()" class="alert alert-warning mb-3">
+              <small>This event has already passed.</small>
+            </div>
+
+            <div *ngIf="isEventFull()" class="alert alert-info mb-3">
+              <small>This event has reached its volunteer capacity.</small>
+            </div>
+
+            <div *ngIf="!isEventPassed() && !isEventFull()" class="mb-3">
+              <p class="text-muted small mb-3">
+                Join {{ event.volunteersNeeded - event.volunteersConfirmed }} other volunteers for this meaningful opportunity.
+              </p>
+              
+              <!-- Action Buttons -->
+              <div class="action-buttons">
+                <!-- Save for Later Button -->
+                <button
+                  class="btn btn-outline-secondary w-100 mb-2"
+                  (click)="addToCart()"
+                  [disabled]="addingToCart || isInCart || hasApplied"
+                  title="Save this event to review later"
+                >
+                  <span *ngIf="addingToCart" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                  {{ addingToCart ? 'Saving...' : isInCart ? '✓ Saved' : 'Save for Later' }}
+                </button>
+
+                <!-- Apply Now Button -->
+                <button
+                  class="btn btn-primary w-100"
+                  (click)="applyToEvent()"
+                  [disabled]="applying || hasApplied || isEventFull() || isEventPassed()"
+                  title="Apply to this event immediately"
+                >
+                  <span *ngIf="applying" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                  {{ applying ? 'Applying...' : hasApplied ? '✓ Applied' : 'Apply Now' }}
+                </button>
+              </div>
+
+              <!-- Status Messages -->
+              <div *ngIf="isInCart && !hasApplied" class="alert alert-success mt-2 mb-0">
+                <small>✓ Event saved to your cart</small>
+              </div>
+              <div *ngIf="hasApplied" class="alert alert-success mt-2 mb-0">
+                <small>✓ You've applied to this event</small>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Event Stats Card -->
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title mb-3">Event Stats</h5>
+            <div class="stat-item mb-3 pb-3 border-bottom">
+              <small class="text-muted">Status</small>
+              <p class="mb-0 fw-bold">
+                <span class="badge bg-success">Published</span>
+              </p>
+            </div>
+            <div class="stat-item mb-3 pb-3 border-bottom">
+              <small class="text-muted">Volunteers Confirmed</small>
+              <p class="mb-0 fw-bold">{{ event.volunteersConfirmed }} / {{ event.volunteersNeeded }}</p>
+            </div>
+            <div class="stat-item">
+              <small class="text-muted">Event Type</small>
+              <p class="mb-0 fw-bold">{{ event.eventType }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

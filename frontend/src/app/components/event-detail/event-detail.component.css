@@ -1,0 +1,396 @@
+/* ============================================
+   CSS VARIABLES & THEME
+   ============================================ */
+:host {
+  --gradient-dark: linear-gradient(135deg, #0F1419 0%, #1A1F2E 100%);
+  --gradient-primary: linear-gradient(135deg, #FF6B35 0%, #FF8C5A 100%);
+  --accent-primary: #FF6B35;
+  --accent-primary-hover: #E55A24;
+  --bg-dark-primary: #0F1419;
+  --bg-dark-secondary: #1A1F2E;
+  --text-white: #FFFFFF;
+  --text-muted: #A0AEC0;
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+  --shadow-glow: 0 0 20px rgba(255, 107, 53, 0.3);
+  --transition-normal: all 0.3s ease;
+}
+
+.event-detail-container {
+  min-height: 100vh;
+  background: var(--bg-dark-primary);
+  padding-top: 80px;
+  color: var(--text-white);
+}
+
+.event-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.back-button-container {
+  margin-bottom: 2rem;
+}
+
+.btn-back-events {
+  background: none;
+  border: 1px solid rgba(255, 107, 53, 0.5);
+  color: var(--text-white);
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-normal);
+  font-size: 0.95rem;
+}
+
+.btn-back-events:hover {
+  background: rgba(255, 107, 53, 0.1);
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+/* ============================================
+   NAVBAR
+   ============================================ */
+.navbar {
+  background: var(--gradient-dark);
+  padding: 1rem 0;
+  box-shadow: var(--shadow-lg);
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 107, 53, 0.1);
+}
+
+.navbar-container {
+  width: 100%;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-brand {
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: 2px;
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 2.5rem;
+  align-items: center;
+}
+
+.nav-btn {
+  color: var(--text-white);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: var(--transition-normal);
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0.5rem 0.75rem;
+}
+
+.nav-btn:hover {
+  color: var(--accent-primary);
+}
+
+/* ============================================
+   EVENT CONTENT SECTIONS
+   ============================================ */
+.event-header {
+  background: var(--bg-dark-secondary);
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 107, 53, 0.1);
+  box-shadow: var(--shadow-md);
+  margin-bottom: 2rem;
+}
+
+.event-header h1 {
+  color: var(--text-white);
+  font-weight: 700;
+  line-height: 1.3;
+  font-size: 2.5rem;
+}
+
+.event-image {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  margin-bottom: 2rem;
+}
+
+.event-description {
+  background: var(--bg-dark-secondary);
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 107, 53, 0.1);
+  box-shadow: var(--shadow-md);
+  margin-bottom: 2rem;
+}
+
+.event-description h3 {
+  color: var(--text-white);
+  font-weight: 600;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.event-description p {
+  color: var(--text-muted);
+  line-height: 1.8;
+  font-size: 1rem;
+}
+
+.event-details-grid {
+  background: var(--bg-dark-secondary);
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 107, 53, 0.1);
+  box-shadow: var(--shadow-md);
+  margin-bottom: 2rem;
+}
+
+.detail-card {
+  background: rgba(255, 107, 53, 0.05);
+  border-left: 4px solid var(--accent-primary);
+  padding: 1.5rem;
+  border-radius: 8px;
+  transition: var(--transition-normal);
+}
+
+.detail-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+  background: rgba(255, 107, 53, 0.1);
+}
+
+.detail-card h6 {
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--accent-primary);
+  margin-bottom: 0.5rem;
+}
+
+.detail-card p {
+  font-size: 1rem;
+  color: var(--text-white);
+  margin: 0;
+}
+
+.map-section {
+  background: var(--bg-dark-secondary);
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 107, 53, 0.1);
+  box-shadow: var(--shadow-md);
+}
+
+.map-section h3 {
+  color: var(--text-white);
+  font-weight: 600;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.map-section p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+}
+
+#event-map {
+  background: var(--bg-dark-primary);
+  border: 1px solid rgba(255, 107, 53, 0.2);
+}
+
+/* ============================================
+   ACTION BUTTONS
+   ============================================ */
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.btn-outline-secondary {
+  color: var(--accent-primary) !important;
+  border-color: var(--accent-primary) !important;
+  font-weight: 600;
+  transition: var(--transition-normal);
+  background: transparent;
+}
+
+.btn-outline-secondary:hover:not(:disabled) {
+  background: rgba(255, 107, 53, 0.1) !important;
+  border-color: var(--accent-primary) !important;
+  color: var(--accent-primary) !important;
+}
+
+.btn-outline-secondary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ============================================
+   CARDS & BUTTONS
+   ============================================ */
+.card {
+  background: var(--bg-dark-secondary);
+  border: 1px solid rgba(255, 107, 53, 0.1);
+  border-radius: 12px;
+  transition: var(--transition-normal);
+  box-shadow: var(--shadow-md);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-lg) !important;
+  border-color: rgba(255, 107, 53, 0.3);
+}
+
+.card-title {
+  color: var(--text-white);
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.card-body {
+  color: var(--text-white);
+}
+
+.stat-item small {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  color: var(--accent-primary);
+}
+
+.stat-item p {
+  color: var(--text-white);
+  font-size: 1rem;
+}
+
+.btn-primary {
+  background: var(--gradient-primary);
+  border: none;
+  font-weight: 600;
+  transition: var(--transition-normal);
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg), var(--shadow-glow);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-outline-secondary {
+  color: var(--text-muted);
+  border-color: var(--text-muted);
+  font-weight: 600;
+  transition: var(--transition-normal);
+}
+
+.btn-outline-secondary:hover {
+  background-color: var(--text-muted);
+  border-color: var(--text-muted);
+  color: var(--bg-dark-primary);
+}
+
+.badge {
+  font-size: 0.75rem;
+  padding: 0.35rem 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: var(--accent-primary);
+}
+
+.alert {
+  border: none;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  background: rgba(255, 107, 53, 0.1);
+  color: var(--text-white);
+  border-left: 4px solid var(--accent-primary);
+}
+
+.alert-danger {
+  background: rgba(220, 53, 69, 0.1);
+  border-left-color: #dc3545;
+  color: #ff6b6b;
+}
+
+.alert-success {
+  background: rgba(40, 167, 69, 0.1);
+  border-left-color: #28a745;
+  color: #51cf66;
+}
+
+.spinner-border {
+  color: var(--accent-primary);
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+@media (max-width: 1024px) {
+  .event-content {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .event-content {
+    padding: 1rem;
+  }
+
+  .event-header,
+  .event-description,
+  .event-details-grid,
+  .map-section {
+    padding: 1.5rem;
+  }
+
+  .event-header h1 {
+    font-size: 1.75rem;
+  }
+
+  .detail-card {
+    padding: 1rem !important;
+  }
+
+  .sticky-top {
+    position: static !important;
+    margin-bottom: 1.5rem;
+  }
+
+  #event-map {
+    height: 300px !important;
+  }
+
+  .btn-back-events {
+    width: 100%;
+    text-align: center;
+  }
+}

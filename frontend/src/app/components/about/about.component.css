@@ -1,0 +1,449 @@
+/* ============================================
+   ABOUT PAGE - COMPREHENSIVE STYLING
+   ============================================ */
+
+/* ============================================
+   NAVBAR
+   ============================================ */
+
+.navbar {
+  background: var(--gradient-dark);
+  padding: 1.5rem 0;
+  box-shadow: var(--shadow-lg);
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 107, 53, 0.1);
+}
+
+.navbar-container {
+  width: 100%;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-brand {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text-white);
+  text-decoration: none;
+  letter-spacing: 2px;
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  cursor: pointer;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 2.5rem;
+  align-items: center;
+}
+
+.nav-link {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: var(--transition-normal);
+  position: relative;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--accent-primary);
+  transition: var(--transition-normal);
+}
+
+.nav-link:hover {
+  color: var(--accent-primary);
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+.nav-login {
+  background: var(--gradient-primary);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: var(--transition-normal);
+}
+
+.nav-login::after {
+  display: none;
+}
+
+.nav-login:hover {
+  background: linear-gradient(135deg, var(--accent-primary-hover) 0%, #FF9966 100%);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* ============================================
+   ABOUT SECTION
+   ============================================ */
+
+.about-section {
+  background: var(--gradient-dark);
+  padding: 120px 2rem 80px;
+  min-height: 100vh;
+  margin-top: 0;
+}
+
+.about-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.about-header {
+  text-align: center;
+  margin-bottom: 4rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid rgba(255, 107, 53, 0.2);
+}
+
+.about-title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: var(--text-white);
+  margin-bottom: 1rem;
+  letter-spacing: -1px;
+}
+
+.about-tagline {
+  font-size: 1.3rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* ============================================
+   ABSTRACT SECTION
+   ============================================ */
+
+.about-abstract {
+  background: rgba(255, 107, 53, 0.05);
+  border: 1px solid rgba(255, 107, 53, 0.1);
+  border-radius: 16px;
+  padding: 3rem;
+  margin-bottom: 4rem;
+}
+
+.section-heading {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-white);
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.5px;
+}
+
+.abstract-text {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+}
+
+.abstract-text:last-child {
+  margin-bottom: 0;
+}
+
+/* ============================================
+   DEVELOPERS SECTION
+   ============================================ */
+
+.developers-section {
+  margin-bottom: 4rem;
+}
+
+.developers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.developer-card {
+  background: var(--bg-dark-primary);
+  border: 1px solid rgba(255, 107, 53, 0.1);
+  border-radius: 16px;
+  padding: 2.5rem;
+  text-align: center;
+  transition: var(--transition-normal);
+}
+
+.developer-card:hover {
+  border-color: rgba(255, 107, 53, 0.3);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-8px);
+}
+
+.developer-avatar {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1.5rem;
+  background: var(--gradient-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: white;
+}
+
+.developer-name {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-white);
+  margin-bottom: 0.5rem;
+}
+
+.developer-role {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+
+.developer-email {
+  color: var(--accent-primary);
+  text-decoration: none;
+  font-weight: 600;
+  transition: var(--transition-normal);
+  display: inline-block;
+}
+
+.developer-email:hover {
+  color: var(--accent-primary-hover);
+  text-decoration: underline;
+}
+
+/* ============================================
+   CONTACT SECTION
+   ============================================ */
+
+.contact-section {
+  background: rgba(255, 107, 53, 0.05);
+  border: 1px solid rgba(255, 107, 53, 0.1);
+  border-radius: 16px;
+  padding: 3rem;
+  margin-bottom: 4rem;
+}
+
+.contact-description {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.contact-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.contact-item {
+  padding: 1.5rem;
+  background: var(--bg-dark-primary);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 107, 53, 0.1);
+}
+
+.contact-label {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-white);
+  margin-bottom: 0.75rem;
+}
+
+.contact-link {
+  color: var(--accent-primary);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: var(--transition-normal);
+  display: inline-block;
+}
+
+.contact-link:hover {
+  color: var(--accent-primary-hover);
+  text-decoration: underline;
+}
+
+.contact-text {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ============================================
+   CTA SECTION
+   ============================================ */
+
+.cta-section {
+  text-align: center;
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(0, 128, 128, 0.1) 100%);
+  border: 1px solid rgba(255, 107, 53, 0.2);
+  border-radius: 16px;
+  padding: 3rem;
+  margin-bottom: 2rem;
+}
+
+.cta-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-white);
+  margin-bottom: 0.5rem;
+}
+
+.cta-subtitle {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+}
+
+.cta-buttons {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-normal);
+  border: none;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-primary {
+  background: var(--gradient-primary);
+  color: white;
+  box-shadow: var(--shadow-md);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, var(--accent-primary-hover) 0%, #FF9966 100%);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg), var(--shadow-glow);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--accent-primary);
+  border: 2px solid var(--accent-primary);
+}
+
+.btn-secondary:hover {
+  background: var(--accent-primary);
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
+
+.footer {
+  background: #1a1a1a;
+  color: var(--text-muted);
+  padding: 2rem;
+  text-align: center;
+  border-top: 1px solid rgba(255, 107, 53, 0.1);
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-container p {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 768px) {
+  .about-title {
+    font-size: 2.5rem;
+  }
+
+  .section-heading {
+    font-size: 1.5rem;
+  }
+
+  .about-abstract,
+  .contact-section,
+  .cta-section {
+    padding: 2rem;
+  }
+
+  .navbar-links {
+    gap: 1.5rem;
+  }
+
+  .cta-buttons {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .developers-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-section {
+    padding: 100px 1rem 60px;
+  }
+
+  .about-title {
+    font-size: 2rem;
+  }
+
+  .section-heading {
+    font-size: 1.3rem;
+  }
+
+  .navbar-container {
+    padding: 0 1rem;
+  }
+
+  .navbar-brand {
+    font-size: 1.5rem;
+  }
+
+  .navbar-links {
+    gap: 1rem;
+  }
+
+  .nav-login {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+  }
+}

@@ -1,0 +1,102 @@
+<div class="login-container">
+  <div class="login-card">
+    <!-- Logo/Branding -->
+    <div class="login-header">
+      <div class="logo-section">
+        <h1 class="logo-text">Voluntra</h1>
+        <p class="logo-subtitle">Find meaningful volunteer opportunities</p>
+      </div>
+    </div>
+
+    <!-- Error Alert -->
+    <div *ngIf="error" class="error-alert">
+      <i class="icon-error">⚠️</i>
+      <div class="error-content">
+        <p class="error-message">{{ error }}</p>
+      </div>
+      <button type="button" class="error-close" (click)="error = ''">&times;</button>
+    </div>
+
+    <!-- Login Form -->
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <!-- Username/Email Field -->
+      <div class="form-group">
+        <label for="usernameOrEmail" class="form-label">Username or Email</label>
+        <input
+          type="text"
+          class="form-control"
+          id="usernameOrEmail"
+          formControlName="usernameOrEmail"
+          [class.is-invalid]="submitted && f['usernameOrEmail'].errors"
+          placeholder="Enter your username or email"
+        />
+        <div *ngIf="submitted && f['usernameOrEmail'].errors" class="error-feedback">
+          <span *ngIf="f['usernameOrEmail'].errors['required']">Username or email is required</span>
+          <span *ngIf="f['usernameOrEmail'].errors['minlength']">Username must be at least 3 characters</span>
+        </div>
+      </div>
+
+      <!-- Password Field with Toggle -->
+      <div class="form-group">
+        <label for="password" class="form-label">Password</label>
+        <div class="password-input-wrapper">
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            class="form-control"
+            id="password"
+            formControlName="password"
+            [class.is-invalid]="submitted && f['password'].errors"
+            placeholder="Enter your password"
+          />
+          <button
+            type="button"
+            class="password-toggle"
+            (click)="togglePasswordVisibility()"
+            tabindex="-1"
+          >
+            <span *ngIf="!showPassword">👁️</span>
+            <span *ngIf="showPassword">👁️‍🗨️</span>
+          </button>
+        </div>
+        <div *ngIf="submitted && f['password'].errors" class="error-feedback">
+          <span *ngIf="f['password'].errors['required']">Password is required</span>
+          <span *ngIf="f['password'].errors['minlength']">Password must be at least 6 characters</span>
+        </div>
+      </div>
+
+      <!-- Remember Me Checkbox -->
+      <div class="form-group checkbox-group">
+        <input
+          type="checkbox"
+          id="rememberMe"
+          formControlName="rememberMe"
+          class="form-checkbox"
+        />
+        <label for="rememberMe" class="checkbox-label">Remember me</label>
+      </div>
+
+      <!-- Submit Button -->
+      <button
+        type="submit"
+        class="btn-login"
+        [disabled]="loading"
+      >
+        <span *ngIf="loading" class="spinner"></span>
+        {{ loading ? 'Logging in...' : 'Login' }}
+      </button>
+    </form>
+
+    <!-- Divider -->
+    <div class="divider">
+      <span>or</span>
+    </div>
+
+    <!-- Register Link -->
+    <p class="register-prompt">
+      Don't have an account?
+      <a href="javascript:void(0)" (click)="navigateToRegister()" class="register-link">
+        Sign up here
+      </a>
+    </p>
+  </div>
+</div>

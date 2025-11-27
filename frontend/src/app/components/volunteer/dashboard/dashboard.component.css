@@ -1,0 +1,640 @@
+/* CSS Variables */
+:root {
+  --bg-dark-primary: #0f1419;
+  --bg-dark-secondary: #1a1f2e;
+  --accent-primary: #ff6b35;
+  --accent-primary-hover: #ff8555;
+  --accent-secondary: #008080;
+  --text-white: #ffffff;
+  --text-muted: #a0aec0;
+  --gradient-primary: linear-gradient(135deg, #ff6b35 0%, #ff8555 100%);
+  --gradient-dark: linear-gradient(135deg, #0f1419 0%, #1a1f2e 100%);
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+  --transition-normal: all 0.3s ease;
+}
+
+.volunteer-dashboard-container {
+  min-height: 100vh;
+  background: var(--gradient-dark);
+  color: var(--text-white);
+}
+
+/* ============================================
+   NAVBAR
+   ============================================ */
+.navbar {
+  background: var(--gradient-dark);
+  padding: 1rem 0;
+  box-shadow: var(--shadow-lg);
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 107, 53, 0.1);
+}
+
+.navbar-container {
+  width: 100%;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-brand {
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: 2px;
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 2.5rem;
+}
+
+.nav-btn {
+  color: var(--text-white);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: var(--transition-normal);
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0.5rem 0.75rem;
+}
+
+.nav-btn:hover {
+  color: var(--accent-primary);
+}
+
+/* ============================================
+   DASHBOARD CONTAINER
+   ============================================ */
+.dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+}
+
+/* ============================================
+   WELCOME SECTION
+   ============================================ */
+.welcome-section {
+  background: var(--gradient-dark);
+  color: var(--text-white);
+  padding: 120px 2rem 80px;
+  margin-top: 60px;
+  text-align: center;
+}
+
+.welcome-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.welcome-content {
+  padding: 2rem;
+}
+
+.welcome-title {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  letter-spacing: -1px;
+}
+
+.welcome-subtitle {
+  font-size: 1.3rem;
+  color: var(--accent-primary);
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.welcome-description {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.stat-card {
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.stat-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15) !important;
+}
+
+.stat-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.stat-card .display-6 {
+  margin: 0;
+}
+
+.card {
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.card-header {
+  background-color: white !important;
+  border-bottom: 1px solid #e9ecef;
+  border-radius: 12px 12px 0 0 !important;
+}
+
+.card-header h5 {
+  color: #333;
+  font-weight: 600;
+  margin: 0;
+}
+
+.nav-tabs {
+  border-bottom: 1px solid #e9ecef;
+  padding: 0 1rem;
+}
+
+.nav-tabs .nav-link {
+  color: #666;
+  border: none;
+  border-bottom: 3px solid transparent;
+  margin-left: 0;
+  padding: 1rem 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.nav-tabs .nav-link:hover {
+  color: #667eea;
+  border-bottom-color: #667eea;
+}
+
+.nav-tabs .nav-link.active {
+  color: #667eea;
+  border-bottom-color: #667eea;
+  background-color: transparent;
+}
+
+.applications-list {
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.application-item {
+  transition: all 0.3s ease;
+}
+
+.application-item:hover {
+  background-color: #f9f9f9;
+}
+
+.application-item:last-child {
+  border-bottom: none !important;
+}
+
+.status-badge {
+  flex-shrink: 0;
+}
+
+.application-item h6 {
+  color: #333;
+  font-weight: 600;
+}
+
+.application-item a {
+  color: #667eea;
+  text-decoration: none;
+}
+
+.application-item a:hover {
+  text-decoration: underline;
+}
+
+.badge {
+  font-size: 0.75rem;
+  padding: 0.4rem 0.8rem !important;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-outline-primary {
+  color: #667eea;
+  border-color: #667eea;
+  font-weight: 600;
+}
+
+.btn-outline-primary:hover {
+  background-color: #667eea;
+  border-color: #667eea;
+  color: white;
+}
+
+.btn-outline-secondary {
+  color: #6c757d;
+  border-color: #6c757d;
+  font-weight: 600;
+}
+
+.btn-outline-secondary:hover {
+  background-color: #6c757d;
+  border-color: #6c757d;
+  color: white;
+}
+
+.btn-outline-danger {
+  color: #dc3545;
+  border-color: #dc3545;
+  font-weight: 600;
+}
+
+.btn-outline-danger:hover {
+  background-color: #dc3545;
+  border-color: #dc3545;
+  color: white;
+}
+
+.btn-sm {
+  font-size: 0.85rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+}
+
+.notification-item {
+  border-bottom: 1px solid #e9ecef;
+  transition: all 0.3s ease;
+}
+
+.notification-item:hover {
+  background-color: #f9f9f9;
+}
+
+.notification-item:last-child {
+  border-bottom: none !important;
+}
+
+.notification-item p {
+  color: #333;
+  margin: 0;
+}
+
+.spinner-border {
+  color: #667eea;
+}
+
+.alert {
+  border: none;
+  border-radius: 8px;
+}
+
+.alert-link {
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.alert-link:hover {
+  text-decoration: underline;
+}
+
+.alert-info {
+  background-color: #e7f3ff;
+  color: #0c5aa0;
+}
+
+.alert-info a {
+  color: #0c5aa0;
+  font-weight: 600;
+}
+
+/* ============================================
+   STAT CARDS
+   ============================================ */
+.stat-card {
+  background: var(--bg-dark-secondary);
+  border: 1px solid rgba(255, 107, 53, 0.1);
+  border-radius: 12px;
+  transition: var(--transition-normal);
+  overflow: hidden;
+}
+
+.stat-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(255, 107, 53, 0.3);
+  box-shadow: var(--shadow-lg);
+}
+
+.stat-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.stat-card .display-6 {
+  margin: 0;
+  color: var(--accent-primary);
+}
+
+/* ============================================
+   EMPTY STATE
+   ============================================ */
+.empty-state {
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+.empty-state-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.empty-state-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-white);
+  margin-bottom: 0.5rem;
+}
+
+.empty-state-message {
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+}
+
+/* ============================================
+   CARDS & SECTIONS
+   ============================================ */
+.card {
+  background: var(--bg-dark-secondary);
+  border: 1px solid rgba(255, 107, 53, 0.1);
+  border-radius: 12px;
+  transition: var(--transition-normal);
+}
+
+.card-header {
+  background: var(--bg-dark-secondary) !important;
+  border-bottom: 1px solid rgba(255, 107, 53, 0.1);
+  border-radius: 12px 12px 0 0 !important;
+}
+
+.card-header h5 {
+  color: var(--text-white);
+  font-weight: 600;
+  margin: 0;
+}
+
+/* ============================================
+   TABS
+   ============================================ */
+.nav-tabs {
+  border-bottom: 1px solid rgba(255, 107, 53, 0.1);
+  padding: 0 1rem;
+}
+
+.nav-tabs .nav-link {
+  color: var(--text-muted);
+  border: none;
+  border-bottom: 3px solid transparent;
+  margin-left: 0;
+  padding: 1rem 1rem;
+  font-weight: 500;
+  transition: var(--transition-normal);
+}
+
+.nav-tabs .nav-link:hover {
+  color: var(--accent-primary);
+  border-bottom-color: var(--accent-primary);
+}
+
+.nav-tabs .nav-link.active {
+  color: var(--accent-primary);
+  border-bottom-color: var(--accent-primary);
+  background-color: transparent;
+}
+
+/* ============================================
+   APPLICATION ITEMS
+   ============================================ */
+.application-item {
+  border-bottom: 1px solid rgba(255, 107, 53, 0.1);
+  transition: var(--transition-normal);
+  padding: 1.5rem;
+}
+
+.application-item:hover {
+  background: rgba(255, 107, 53, 0.05);
+}
+
+.application-item:last-child {
+  border-bottom: none !important;
+}
+
+.application-item h6 {
+  color: var(--text-white);
+  font-weight: 600;
+}
+
+.application-item a {
+  color: var(--accent-primary);
+  text-decoration: none;
+}
+
+.application-item a:hover {
+  text-decoration: underline;
+}
+
+/* ============================================
+   BUTTONS
+   ============================================ */
+.btn-primary {
+  background: var(--gradient-primary);
+  border: none;
+  color: white;
+  font-weight: 600;
+  transition: var(--transition-normal);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, var(--accent-primary-hover) 0%, #FF9966 100%);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  color: white;
+}
+
+.btn-outline-primary {
+  color: var(--accent-primary);
+  border-color: var(--accent-primary);
+  font-weight: 600;
+}
+
+.btn-outline-primary:hover {
+  background: var(--accent-primary);
+  border-color: var(--accent-primary);
+  color: white;
+}
+
+/* ============================================
+   PROGRESS SECTION
+   ============================================ */
+.progress-item {
+  margin-bottom: 1.5rem;
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.progress-label {
+  color: var(--text-white);
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.progress-percentage {
+  color: var(--accent-primary);
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.progress {
+  background: rgba(255, 107, 53, 0.1);
+  border-radius: 10px;
+  height: 12px;
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+.progress-bar {
+  background: var(--gradient-primary);
+  border-radius: 10px;
+  transition: width 0.6s ease;
+}
+
+.progress-message {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin: 0;
+  font-style: italic;
+}
+
+/* ============================================
+   NOTIFICATIONS
+   ============================================ */
+.empty-notifications {
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  background: rgba(255, 107, 53, 0.05);
+  border-radius: 8px;
+  margin: 1rem;
+}
+
+.notification-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.notification-empty-title {
+  color: var(--text-white);
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin: 0 0 0.5rem 0;
+}
+
+.notification-empty-message {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.notification-badge {
+  color: var(--accent-primary);
+  font-size: 1.5rem;
+  margin-left: 0.5rem;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.notification-item {
+  border-bottom: 1px solid rgba(255, 107, 53, 0.1);
+  padding: 1rem;
+  transition: var(--transition-normal);
+}
+
+.notification-item:hover {
+  background: rgba(255, 107, 53, 0.05);
+}
+
+.notification-item:last-child {
+  border-bottom: none !important;
+}
+
+.notification-item p {
+  color: var(--text-white);
+  margin: 0;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+@media (max-width: 768px) {
+  .welcome-title {
+    font-size: 2rem;
+  }
+
+  .welcome-subtitle {
+    font-size: 1rem;
+  }
+
+  .stat-card .display-6 {
+    font-size: 2rem;
+  }
+
+  .application-item .row {
+    flex-direction: column;
+  }
+
+  .col-md-4.text-end {
+    text-align: left !important;
+    margin-top: 1rem;
+  }
+
+  .btn-sm {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+}

@@ -1,0 +1,166 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-bold" href="javascript:void(0)">Event Details</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="javascript:void(0)" (click)="goBack()">Back to Events</a>
+        </li>
+        <li class="nav-item">
+          <span class="nav-link">{{ currentUser?.username }}</span>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="javascript:void(0)" (click)="logout()">Logout</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-5 mb-5">
+  <!-- Loading State -->
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-3 text-muted">Loading event details...</p>
+  </div>
+
+  <!-- Event Details -->
+  <div *ngIf="!loading && event" class="row">
+    <div class="col-lg-8">
+      <div class="card shadow-lg border-0 mb-4">
+        <div class="card-body p-5">
+          <h1 class="card-title mb-4">{{ event.title }}</h1>
+          
+          <div class="event-meta mb-4">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <p class="meta-label">📍 Location</p>
+                <p class="meta-value">{{ event.location }}</p>
+              </div>
+              <div class="col-md-6 mb-3">
+                <p class="meta-label">📅 Date</p>
+                <p class="meta-value">{{ event.eventDate | date:'short' }}</p>
+              </div>
+              <div class="col-md-6 mb-3">
+                <p class="meta-label">⏱️ Type</p>
+                <p class="meta-value">{{ event.eventType }}</p>
+              </div>
+              <div class="col-md-6 mb-3">
+                <p class="meta-label">👥 Volunteers Needed</p>
+                <p class="meta-value">{{ event.volunteersNeeded }} slots available</p>
+              </div>
+            </div>
+          </div>
+
+          <hr class="my-4">
+
+          <h3 class="mb-3">About This Event</h3>
+          <p class="lead">{{ event.description }}</p>
+
+          <hr class="my-4">
+
+          <h3 class="mb-3">Event Type</h3>
+          <p>
+            <span class="badge bg-info">{{ event.eventType }}</span>
+          </p>
+
+          <hr class="my-4">
+
+          <h3 class="mb-3">Organizer</h3>
+          <p>{{ event.organizerName }}</p>
+
+          <hr class="my-4">
+
+          <h3 class="mb-3">📍 Event Location</h3>
+          <div id="event-map" class="event-map-container mb-3"></div>
+          <p class="text-muted">
+            <small>
+              <strong>Location:</strong> {{ event.location }}<br>
+              <span *ngIf="distanceToEvent">
+                <strong>Distance from you:</strong> {{ distanceToEvent | number:'1.1-1' }} km
+              </span>
+            </small>
+          </p>
+
+          <hr class="my-4">
+
+          <h3 class="mb-3">🎯 Required Skills</h3>
+          <div *ngIf="requiredSkills && requiredSkills.length > 0" class="skills-container">
+            <div class="row">
+              <div *ngFor="let skill of requiredSkills" class="col-md-6 mb-3">
+                <div class="skill-badge">
+                  <div class="skill-name">{{ skill.skillName }}</div>
+                  <div class="skill-level">
+                    <span class="badge" [ngClass]="'bg-' + getLevelColor(skill.minimumProficiency)">
+                      {{ skill.minimumProficiency }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="!requiredSkills || requiredSkills.length === 0" class="alert alert-info">
+            <p class="mb-0">No specific skills required for this event</p>
+          </div>
+        </div>
+      </div>
+
+    <!-- Sidebar -->
+    <div class="col-lg-4">
+      <div class="card shadow-lg border-0 sticky-top" style="top: 20px;">
+        <div class="card-body p-4">
+          <h4 class="card-title mb-4">Ready to Volunteer?</h4>
+          
+          <div class="alert alert-info mb-4">
+            <p class="mb-0">
+              <strong>{{ event.volunteersNeeded }}</strong> volunteer slots available
+            </p>
+          </div>
+
+          <button 
+            *ngIf="!hasApplied"
+            class="btn btn-primary btn-lg w-100 mb-3"
+            (click)="applyForEvent()"
+            [disabled]="applying"
+          >
+            <span *ngIf="applying" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            {{ applying ? 'Applying...' : '✅ Apply Now' }}
+          </button>
+
+          <div *ngIf="hasApplied" class="alert alert-success">
+            <p class="mb-0">✅ You have successfully applied for this event!</p>
+          </div>
+
+          <button 
+            class="btn btn-outline-secondary btn-lg w-100"
+            (click)="goBack()"
+          >
+            ← Back to Events
+          </button>
+
+          <hr class="my-4">
+
+          <h5 class="mb-3">Requirements</h5>
+          <ul class="list-unstyled">
+            <li class="mb-2">✓ Must be 18 or older</li>
+            <li class="mb-2">✓ Reliable transportation</li>
+            <li class="mb-2">✓ Willing to help others</li>
+            <li class="mb-2">✓ Available on event date</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- No Event Found -->
+  <div *ngIf="!loading && !event" class="alert alert-warning text-center">
+    <h5>Event not found</h5>
+    <p>The event you're looking for doesn't exist or has been removed.</p>
+    <button class="btn btn-primary" (click)="goBack()">Back to Events</button>
+  </div>
+</div>

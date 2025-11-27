@@ -1,0 +1,237 @@
+<div class="submit-event-container">
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a class="navbar-brand" href="javascript:void(0)">Voluntra</a>
+      <div class="navbar-links">
+        <button class="nav-btn" (click)="goBack()">← Back</button>
+        <button class="nav-btn" (click)="logout()">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Welcome Section -->
+  <div class="welcome-section">
+    <div class="welcome-container">
+      <div class="welcome-content">
+        <h1 class="welcome-title">Submit a Volunteering Event</h1>
+        <p class="welcome-subtitle">Share Your Opportunity</p>
+        <p class="welcome-description">Help others discover and participate in your volunteering event</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="form-container">
+    <!-- Success/Error Messages -->
+    <div *ngIf="successMessage" class="alert alert-success">
+      {{ successMessage }}
+    </div>
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+
+    <!-- Event Submission Form -->
+    <div class="card shadow-sm border-0">
+      <div class="card-header border-bottom">
+        <h5 class="mb-0">Event Details</h5>
+      </div>
+
+      <div class="card-body">
+        <form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
+          <!-- Basic Information Section -->
+          <div class="form-section">
+            <h6 class="section-title">Basic Information</h6>
+
+            <div class="form-group">
+              <label for="title">Event Title *</label>
+              <input
+                type="text"
+                class="form-control"
+                id="title"
+                formControlName="title"
+                placeholder="e.g., Community Park Cleanup"
+                [class.is-invalid]="submitted && f['title']?.errors">
+              <div *ngIf="submitted && f['title']?.errors" class="invalid-feedback">
+                <span *ngIf="f['title']?.errors?.['required']">Title is required</span>
+                <span *ngIf="f['title']?.errors?.['minlength']">Title must be at least 5 characters</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="eventType">Event Type *</label>
+              <select
+                class="form-control"
+                id="eventType"
+                formControlName="eventType"
+                [class.is-invalid]="submitted && f['eventType']?.errors">
+                <option value="">Select event type</option>
+                <option *ngFor="let type of eventTypes" [value]="type">{{ type }}</option>
+              </select>
+              <div *ngIf="submitted && f['eventType']?.errors" class="invalid-feedback">
+                Event type is required
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="description">Event Description *</label>
+              <textarea
+                class="form-control"
+                id="description"
+                formControlName="description"
+                rows="5"
+                placeholder="Describe what volunteers will do, what to expect, etc."
+                [class.is-invalid]="submitted && f['description']?.errors"></textarea>
+              <small class="form-text">{{ eventForm.get('description')?.value?.length || 0 }}/2000 characters</small>
+              <div *ngIf="submitted && f['description']?.errors" class="invalid-feedback">
+                <span *ngIf="f['description']?.errors?.['required']">Description is required</span>
+                <span *ngIf="f['description']?.errors?.['minlength']">Description must be at least 20 characters</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Event Details Section -->
+          <div class="form-section">
+            <h6 class="section-title">Event Details</h6>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="location">Location *</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="location"
+                  formControlName="location"
+                  placeholder="e.g., Central Park, New York"
+                  [class.is-invalid]="submitted && f['location']?.errors">
+                <div *ngIf="submitted && f['location']?.errors" class="invalid-feedback">
+                  Location is required
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="date">Date *</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="date"
+                  formControlName="date"
+                  [class.is-invalid]="submitted && f['date']?.errors">
+                <div *ngIf="submitted && f['date']?.errors" class="invalid-feedback">
+                  Date is required
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="time">Time *</label>
+                <input
+                  type="time"
+                  class="form-control"
+                  id="time"
+                  formControlName="time"
+                  [class.is-invalid]="submitted && f['time']?.errors">
+                <div *ngIf="submitted && f['time']?.errors" class="invalid-feedback">
+                  Time is required
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="duration">Duration (minutes) *</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="duration"
+                  formControlName="duration"
+                  placeholder="e.g., 120"
+                  [class.is-invalid]="submitted && f['duration']?.errors">
+                <div *ngIf="submitted && f['duration']?.errors" class="invalid-feedback">
+                  Duration is required (1-480 minutes)
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="volunteersNeeded">Volunteers Needed *</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="volunteersNeeded"
+                  formControlName="volunteersNeeded"
+                  placeholder="e.g., 10"
+                  [class.is-invalid]="submitted && f['volunteersNeeded']?.errors">
+                <div *ngIf="submitted && f['volunteersNeeded']?.errors" class="invalid-feedback">
+                  Number of volunteers is required
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Legitimacy & Additional Info Section -->
+          <div class="form-section">
+            <h6 class="section-title">Legitimacy & Additional Information</h6>
+
+            <div class="form-group">
+              <label for="legitimacyDescription">Why is this event legitimate? *</label>
+              <textarea
+                class="form-control"
+                id="legitimacyDescription"
+                formControlName="legitimacyDescription"
+                rows="4"
+                placeholder="Explain the purpose, organization, impact, and why volunteers should trust this event..."
+                [class.is-invalid]="submitted && f['legitimacyDescription']?.errors"></textarea>
+              <small class="form-text">{{ eventForm.get('legitimacyDescription')?.value?.length || 0 }}/1000 characters</small>
+              <div *ngIf="submitted && f['legitimacyDescription']?.errors" class="invalid-feedback">
+                <span *ngIf="f['legitimacyDescription']?.errors?.['required']">Legitimacy description is required</span>
+                <span *ngIf="f['legitimacyDescription']?.errors?.['minlength']">Must be at least 50 characters</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="requirements">Requirements (Optional)</label>
+              <textarea
+                class="form-control"
+                id="requirements"
+                formControlName="requirements"
+                rows="3"
+                placeholder="e.g., Must be 18+, Physical fitness required, etc."></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="benefits">Benefits for Volunteers (Optional)</label>
+              <textarea
+                class="form-control"
+                id="benefits"
+                formControlName="benefits"
+                rows="3"
+                placeholder="e.g., Free lunch, Certificate, Networking opportunity, etc."></textarea>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="form-actions">
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="loading">
+              {{ loading ? 'Submitting...' : '📤 Submit Event for Review' }}
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              [disabled]="loading"
+              (click)="goBack()">
+              Cancel
+            </button>
+          </div>
+
+          <div class="info-note">
+            <p><strong>Note:</strong> Your event will be reviewed by our admins before being published. We'll notify you once it's approved or if we need more information.</p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

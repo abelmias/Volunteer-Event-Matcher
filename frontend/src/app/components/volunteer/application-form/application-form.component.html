@@ -1,0 +1,67 @@
+<div class="application-form-container">
+  <!-- Error Alert -->
+  <div *ngIf="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>Error!</strong> {{ error }}
+    <button type="button" class="btn-close" (click)="error = ''"></button>
+  </div>
+
+  <!-- Success Alert -->
+  <div *ngIf="success" class="alert alert-success alert-dismissible fade show" role="alert">
+    <strong>Success!</strong> {{ success }}
+    <button type="button" class="btn-close" (click)="success = ''"></button>
+  </div>
+
+  <!-- Application Form -->
+  <form [formGroup]="applicationForm" (ngSubmit)="onSubmit()" class="card shadow-sm">
+    <div class="card-body p-4">
+      <h5 class="card-title mb-4">Apply for This Event</h5>
+
+      <!-- Motivation Text -->
+      <div class="mb-3">
+        <label for="motivationText" class="form-label">Why do you want to volunteer? *</label>
+        <textarea
+          class="form-control"
+          id="motivationText"
+          formControlName="motivationText"
+          [class.is-invalid]="submitted && f['motivationText']?.errors"
+          placeholder="Tell us why you're interested in this event..."
+          rows="4"
+        ></textarea>
+        <div *ngIf="submitted && f['motivationText']?.errors" class="invalid-feedback d-block">
+          <span *ngIf="f['motivationText']?.errors?.['required']">Motivation is required</span>
+          <span *ngIf="f['motivationText']?.errors?.['minlength']">Motivation must be at least 10 characters</span>
+          <span *ngIf="f['motivationText']?.errors?.['maxlength']">Motivation must not exceed 1000 characters</span>
+        </div>
+        <small class="form-text text-muted">
+          {{ f['motivationText']?.value?.length || 0 }}/1000 characters
+        </small>
+      </div>
+
+      <!-- Form Actions -->
+      <div class="d-flex gap-2">
+        <button
+          type="submit"
+          class="btn btn-primary flex-grow-1"
+          [disabled]="loading"
+        >
+          <span *ngIf="!loading">
+            <i class="bi bi-send"></i>
+            Submit Application
+          </span>
+          <span *ngIf="loading">
+            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            Submitting...
+          </span>
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="onCancel()"
+          [disabled]="loading"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

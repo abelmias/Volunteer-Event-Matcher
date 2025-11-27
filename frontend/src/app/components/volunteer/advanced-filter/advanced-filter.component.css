@@ -1,0 +1,271 @@
+.advanced-filter-container {
+  width: 100%;
+}
+
+.filter-bar {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
+}
+
+.filter-form {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+
+.filter-group {
+  flex: 1;
+  min-width: 150px;
+  position: relative;
+}
+
+.location-group {
+  min-width: 200px;
+}
+
+.location-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.spinner-small {
+  position: absolute;
+  right: 10px;
+  font-size: 1rem;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.suggestions-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 100;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.suggestion-item {
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background-color 0.3s ease;
+}
+
+.suggestion-item:hover {
+  background-color: #f0f7ff;
+}
+
+.suggestion-icon {
+  font-size: 1rem;
+}
+
+.suggestion-text {
+  flex: 1;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.suggestion-distance {
+  font-size: 0.8rem;
+  color: #999;
+}
+
+.form-control,
+.form-select {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+.btn {
+  border-radius: 8px;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #5568d3 0%, #6a3d8a 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.btn-outline-secondary {
+  color: #6c757d;
+  border: 1px solid #6c757d;
+  background: none;
+}
+
+.btn-outline-secondary:hover {
+  background-color: #6c757d;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.advanced-filters-panel {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  border: 1px solid #e0e0e0;
+}
+
+.advanced-filters-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.advanced-filters-content h6 {
+  grid-column: 1 / -1;
+  font-weight: 700;
+  color: #333;
+  margin: 0 0 1rem 0;
+}
+
+.filter-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.filter-label {
+  font-weight: 600;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.date-range {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.date-separator {
+  color: #999;
+  font-weight: 600;
+  padding: 0 0.25rem;
+}
+
+.range-inputs {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.range-separator {
+  color: #999;
+  font-weight: 600;
+  padding: 0 0.25rem;
+}
+
+.sort-order {
+  display: flex;
+  gap: 1rem;
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.radio-label input[type="radio"] {
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+}
+
+.btn-sm {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+}
+
+@media (max-width: 1200px) {
+  .filter-form {
+    gap: 0.75rem;
+  }
+
+  .filter-group {
+    min-width: 120px;
+    flex: 0 1 calc(50% - 0.375rem);
+  }
+
+  .btn {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .filter-bar {
+    padding: 1rem;
+  }
+
+  .filter-form {
+    flex-direction: column;
+  }
+
+  .filter-group {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .advanced-filters-content {
+    grid-template-columns: 1fr;
+  }
+
+  .date-range,
+  .range-inputs {
+    flex-direction: column;
+  }
+
+  .date-separator,
+  .range-separator {
+    display: none;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .sort-order {
+    flex-direction: column;
+  }
+}

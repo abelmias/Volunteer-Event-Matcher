@@ -1,0 +1,253 @@
+<div class="container mt-5 mb-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <!-- Header -->
+      <div class="mb-4">
+        <h2 class="mb-2">{{ isEditMode ? 'Edit Event' : 'Create New Event' }}</h2>
+        <p class="text-muted">{{ isEditMode ? 'Update event details' : 'Create a new volunteer event' }}</p>
+      </div>
+
+      <!-- Error Alert -->
+      <div *ngIf="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Error!</strong> {{ error }}
+        <button type="button" class="btn-close" (click)="error = ''"></button>
+      </div>
+
+      <!-- Success Alert -->
+      <div *ngIf="success" class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Success!</strong> {{ success }}
+        <button type="button" class="btn-close" (click)="success = ''"></button>
+      </div>
+
+      <!-- Event Form -->
+      <form [formGroup]="eventForm" (ngSubmit)="onSubmit()" class="card shadow-sm">
+        <div class="card-body p-4">
+          <!-- Title -->
+          <div class="mb-3">
+            <label for="title" class="form-label">Event Title *</label>
+            <input
+              type="text"
+              class="form-control"
+              id="title"
+              formControlName="title"
+              [class.is-invalid]="submitted && f['title']?.errors"
+              placeholder="Enter event title"
+            />
+            <div *ngIf="submitted && f['title']?.errors" class="invalid-feedback d-block">
+              <span *ngIf="f['title']?.errors?.['required']">Title is required</span>
+              <span *ngIf="f['title']?.errors?.['minlength']">Title must be at least 3 characters</span>
+              <span *ngIf="f['title']?.errors?.['maxlength']">Title must not exceed 200 characters</span>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div class="mb-3">
+            <label for="description" class="form-label">Description *</label>
+            <textarea
+              class="form-control"
+              id="description"
+              formControlName="description"
+              [class.is-invalid]="submitted && f['description']?.errors"
+              placeholder="Enter event description"
+              rows="4"
+            ></textarea>
+            <div *ngIf="submitted && f['description']?.errors" class="invalid-feedback d-block">
+              <span *ngIf="f['description']?.errors?.['required']">Description is required</span>
+              <span *ngIf="f['description']?.errors?.['minlength']">Description must be at least 10 characters</span>
+              <span *ngIf="f['description']?.errors?.['maxlength']">Description must not exceed 2000 characters</span>
+            </div>
+          </div>
+
+          <!-- Event Type -->
+          <div class="mb-3">
+            <label for="eventType" class="form-label">Event Type *</label>
+            <select
+              class="form-select"
+              id="eventType"
+              formControlName="eventType"
+              [class.is-invalid]="submitted && f['eventType']?.errors"
+            >
+              <option value="">Select event type</option>
+              <option *ngFor="let type of eventTypes" [value]="type">{{ type }}</option>
+            </select>
+            <div *ngIf="submitted && f['eventType']?.errors" class="invalid-feedback d-block">
+              Event type is required
+            </div>
+          </div>
+
+          <!-- Location -->
+          <div class="mb-3">
+            <label for="location" class="form-label">Location *</label>
+            <input
+              type="text"
+              class="form-control"
+              id="location"
+              formControlName="location"
+              [class.is-invalid]="submitted && f['location']?.errors"
+              placeholder="Enter event location"
+            />
+            <div *ngIf="submitted && f['location']?.errors" class="invalid-feedback d-block">
+              <span *ngIf="f['location']?.errors?.['required']">Location is required</span>
+              <span *ngIf="f['location']?.errors?.['minlength']">Location must be at least 3 characters</span>
+            </div>
+          </div>
+
+          <!-- Map Picker -->
+          <div class="mb-3">
+            <label class="form-label">Select Location on Map *</label>
+            <div id="map-picker" class="rounded border" style="height: 400px; width: 100%;"></div>
+            <p class="text-muted small mt-1">Click on the map to set the location coordinates.</p>
+          </div>
+
+          <!-- Coordinates (Read-only) -->
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="latitude" class="form-label">Latitude</label>
+              <input
+                type="number"
+                class="form-control bg-light"
+                id="latitude"
+                formControlName="latitude"
+                readonly
+              />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="longitude" class="form-label">Longitude</label>
+              <input
+                type="number"
+                class="form-control bg-light"
+                id="longitude"
+                formControlName="longitude"
+                readonly
+              />
+            </div>
+          </div>
+
+          <!-- Event Date -->
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="eventDate" class="form-label">Event Date *</label>
+              <input
+                type="datetime-local"
+                class="form-control"
+                id="eventDate"
+                formControlName="eventDate"
+                [class.is-invalid]="submitted && f['eventDate']?.errors"
+              />
+              <div *ngIf="submitted && f['eventDate']?.errors" class="invalid-feedback d-block">
+                Event date is required
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="endDate" class="form-label">End Date</label>
+              <input
+                type="datetime-local"
+                class="form-control"
+                id="endDate"
+                formControlName="endDate"
+              />
+            </div>
+          </div>
+
+          <!-- Duration & Volunteers -->
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="durationHours" class="form-label">Duration (hours)</label>
+              <input
+                type="number"
+                class="form-control"
+                id="durationHours"
+                formControlName="durationHours"
+                [class.is-invalid]="submitted && f['durationHours']?.errors"
+                placeholder="e.g., 3"
+                min="1"
+                max="24"
+              />
+              <div *ngIf="submitted && f['durationHours']?.errors" class="invalid-feedback d-block">
+                <span *ngIf="f['durationHours']?.errors?.['min']">Duration must be at least 1 hour</span>
+                <span *ngIf="f['durationHours']?.errors?.['max']">Duration cannot exceed 24 hours</span>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="volunteersNeeded" class="form-label">Volunteers Needed *</label>
+              <input
+                type="number"
+                class="form-control"
+                id="volunteersNeeded"
+                formControlName="volunteersNeeded"
+                [class.is-invalid]="submitted && f['volunteersNeeded']?.errors"
+                placeholder="e.g., 10"
+                min="1"
+                max="1000"
+              />
+              <div *ngIf="submitted && f['volunteersNeeded']?.errors" class="invalid-feedback d-block">
+                <span *ngIf="f['volunteersNeeded']?.errors?.['required']">Number of volunteers is required</span>
+                <span *ngIf="f['volunteersNeeded']?.errors?.['min']">At least 1 volunteer is needed</span>
+                <span *ngIf="f['volunteersNeeded']?.errors?.['max']">Cannot exceed 1000 volunteers</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Image URL -->
+          <div class="mb-3">
+            <label for="imageUrl" class="form-label">Image URL</label>
+            <input
+              type="url"
+              class="form-control"
+              id="imageUrl"
+              formControlName="imageUrl"
+              placeholder="https://example.com/image.jpg"
+            />
+          </div>
+
+          <!-- Required Skills -->
+          <div class="mb-4">
+            <label class="form-label">Required Skills</label>
+            <div class="row">
+              <div *ngFor="let skill of skills" class="col-md-6 mb-2">
+                <div class="form-check">
+                  <input
+                    type="checkbox"
+                    class="form-check-input"
+                    [id]="'skill-' + skill.id"
+                    [checked]="isSkillSelected(skill.id)"
+                    (change)="toggleSkill(skill.id)"
+                  />
+                  <label class="form-check-label" [for]="'skill-' + skill.id">
+                    {{ skill.name }}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Form Actions -->
+          <div class="d-flex gap-2">
+            <button
+              type="submit"
+              class="btn btn-primary flex-grow-1"
+              [disabled]="loading"
+            >
+              <span *ngIf="!loading">
+                <i class="bi bi-check-circle"></i>
+                {{ isEditMode ? 'Update Event' : 'Create Event' }}
+              </span>
+              <span *ngIf="loading">
+                <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                Processing...
+              </span>
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              (click)="onCancel()"
+              [disabled]="loading"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

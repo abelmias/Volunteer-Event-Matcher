@@ -1,0 +1,493 @@
+<div class="admin-dashboard-container">
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a class="navbar-brand" href="javascript:void(0)">Voluntra</a>
+      <div class="navbar-links">
+        <span class="nav-user">{{ currentUser?.username }}</span>
+        <button class="nav-btn" (click)="logout()">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Welcome Section -->
+  <div class="welcome-section">
+    <div class="welcome-container">
+      <div class="welcome-content">
+        <h1 class="welcome-title">Admin Dashboard</h1>
+        <p class="welcome-subtitle">Manage Events & Applications</p>
+        <p class="welcome-description">Review volunteer submissions, approve events, and manage the platform</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="dashboard-container">
+    <!-- Alerts -->
+    <div *ngIf="error" class="alert alert-error">
+      {{ error }}
+      <button class="alert-close" (click)="error = ''">×</button>
+    </div>
+    <div *ngIf="success" class="alert alert-success">
+      {{ success }}
+      <button class="alert-close" (click)="success = ''">×</button>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="loading" class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading dashboard data...</p>
+    </div>
+
+    <!-- Dashboard Content -->
+    <div *ngIf="!loading">
+      <!-- Tab Navigation -->
+      <div class="tab-navigation">
+        <button 
+          class="tab-btn"
+          [class.active]="activeTab === 'overview'"
+          (click)="switchToOverviewTab()">
+          Overview
+        </button>
+        <button 
+          class="tab-btn"
+          [class.active]="activeTab === 'pending'"
+          (click)="activeTab = 'pending'">
+          Pending Submissions ({{ pendingSubmissions.length }})
+        </button>
+        <button 
+          class="tab-btn"
+          [class.active]="activeTab === 'events'"
+          (click)="switchToEventsTab()">
+          Events ({{ totalEvents }})
+        </button>
+        <button 
+          class="tab-btn"
+          [class.active]="activeTab === 'applications'"
+          (click)="switchToApplicationsTab()">
+          Applications ({{ totalApplications }})
+        </button>
+      </div>
+
+      <!-- Overview Tab -->
+      <div *ngIf="activeTab === 'overview'" class="tab-content">
+        <!-- Statistics Grid -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Total Events</div>
+            <div class="stat-value">{{ totalEvents }}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Published</div>
+            <div class="stat-value">{{ publishedEvents }}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Draft</div>
+            <div class="stat-value">{{ draftEvents }}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Applications</div>
+            <div class="stat-value">{{ totalApplications }}</div>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+          <button class="btn btn-primary" (click)="createNewEvent()">
+            Create New Event
+          </button>
+        </div>
+
+        <!-- Progress Section -->
+        <div class="card shadow-sm border-0 mb-4">
+          <div class="card-header border-bottom">
+            <h5 class="mb-0">Volunteer Recruitment Progress</h5>
+          </div>
+          <div class="card-body">
+            <div class="progress-info">
+              <span class="progress-label">{{ totalVolunteersConfirmed }} / {{ totalVolunteersNeeded }} volunteers confirmed</span>
+              <span class="progress-percentage">{{ getVolunteerPercentage() }}%</span>
+            </div>
+            <div class="progress" role="progressbar" [attr.aria-valuenow]="totalVolunteersConfirmed" aria-valuemin="0" [attr.aria-valuemax]="totalVolunteersNeeded">
+              <div class="progress-bar" [style.width.%]="getVolunteerPercentage()"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Application Status Section -->
+        <div class="card shadow-sm border-0">
+          <div class="card-header border-bottom">
+            <h5 class="mb-0">Application Status</h5>
+          </div>
+          <div class="card-body">
+            <div class="status-grid">
+              <div class="status-item">
+                <div class="status-label">Pending</div>
+                <div class="status-value">{{ pendingApplicationsCount }}</div>
+              </div>
+              <div class="status-item">
+                <div class="status-label">Approved</div>
+                <div class="status-value">{{ approvedApplicationsCount }}</div>
+              </div>
+              <div class="status-item">
+                <div class="status-label">Rejected</div>
+                <div class="status-value">{{ rejectedApplicationsCount }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pending Submissions Tab -->
+      <div *ngIf="activeTab === 'pending'" class="tab-content">
+        <div class="section-header">
+          <h3>Pending Volunteer Submissions</h3>
+        </div>
+
+        <!-- Pending Submissions List -->
+        <div class="card shadow-sm border-0">
+          <div class="card-body p-0">
+            <div *ngIf="pendingSubmissions.length === 0" class="empty-state">
+              <p>No pending submissions</p>
+            </div>
+            <div *ngFor="let submission of pendingSubmissions" class="event-item">
+              <div class="event-header">
+                <h6 class="event-title">{{ submission.title }}</h6>
+                <span class="event-status status-pending_approval">
+                  PENDING REVIEW
+                </span>
+              </div>
+              <p class="event-description">{{ submission.description }}</p>
+              <div class="event-meta">
+                <span>{{ submission.location }}</span>
+                <span>{{ submission.volunteersNeeded }} volunteers needed</span>
+                <span>{{ submission.durationHours }} hours</span>
+              </div>
+              <div class="submission-actions">
+                <button 
+                  class="btn btn-sm btn-success"
+                  (click)="approvePendingSubmission(submission.id)">
+                  Approve
+                </button>
+                <button 
+                  class="btn btn-sm btn-danger"
+                  (click)="rejectPendingSubmission(submission.id)">
+                  Reject
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Events Tab -->
+      <div *ngIf="activeTab === 'events'" class="tab-content">
+        <div class="section-header">
+          <h3>Manage Events</h3>
+          <button class="btn btn-primary" (click)="createNewEvent()">
+            Create New Event
+          </button>
+        </div>
+
+        <!-- Event Filters -->
+        <div class="filter-group">
+          <button 
+            class="filter-btn"
+            [class.active]="selectedEventFilter === 'all'"
+            (click)="selectedEventFilter = 'all'; filterEvents()">
+            All
+          </button>
+          <button 
+            class="filter-btn"
+            [class.active]="selectedEventFilter === 'published'"
+            (click)="selectedEventFilter = 'published'; filterEvents()">
+            Published
+          </button>
+          <button 
+            class="filter-btn"
+            [class.active]="selectedEventFilter === 'draft'"
+            (click)="selectedEventFilter = 'draft'; filterEvents()">
+            Draft
+          </button>
+          <button 
+            class="filter-btn"
+            [class.active]="selectedEventFilter === 'cancelled'"
+            (click)="selectedEventFilter = 'cancelled'; filterEvents()">
+            Cancelled
+          </button>
+        </div>
+
+        <!-- Events List -->
+        <div class="card shadow-sm border-0">
+          <div class="card-body p-0">
+            <div *ngIf="filteredEvents.length === 0" class="empty-state">
+              <p>No events found</p>
+            </div>
+            <div *ngFor="let event of filteredEvents" class="event-item">
+              <div class="event-header">
+                <h6 class="event-title">{{ event.title }}</h6>
+                <span class="event-status" [class]="'status-' + event.status?.toLowerCase()">
+                  {{ event.status }}
+                </span>
+              </div>
+              <p class="event-description">{{ event.description }}</p>
+              <div class="event-meta">
+                <span>{{ event.location }}</span>
+                <span>{{ event.volunteersNeeded }} volunteers needed</span>
+              </div>
+              <div class="event-actions">
+                <!-- Publish button for draft events -->
+                <button 
+                  *ngIf="event.status === 'DRAFT'"
+                  class="btn btn-sm btn-primary"
+                  (click)="publishEvent(event)"
+                  title="Publish this event to make it visible to volunteers">
+                  Publish
+                </button>
+                <!-- Unpublish button for published events -->
+                <button 
+                  *ngIf="event.status === 'PUBLISHED'"
+                  class="btn btn-sm btn-warning"
+                  (click)="unpublishEvent(event)"
+                  title="Unpublish this event to hide it from volunteers">
+                  Unpublish
+                </button>
+                <!-- Edit button -->
+                <button 
+                  class="btn btn-sm btn-secondary"
+                  (click)="editEvent(event)"
+                  title="Edit event details">
+                  Edit
+                </button>
+                <!-- Cancel button -->
+                <button 
+                  *ngIf="event.status !== 'CANCELLED'"
+                  class="btn btn-sm btn-danger"
+                  (click)="cancelEvent(event)"
+                  title="Cancel this event">
+                  Cancel
+                </button>
+                <!-- Delete button -->
+                <button 
+                  class="btn btn-sm btn-outline-danger"
+                  (click)="deleteEvent(event.id)"
+                  title="Delete this event permanently">
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Applications Tab -->
+      <div *ngIf="activeTab === 'applications'" class="tab-content">
+        <div class="section-header">
+          <h3>Review Applications</h3>
+        </div>
+
+        <!-- Applications List -->
+        <div class="card shadow-sm border-0">
+          <div class="card-body p-0">
+            <div *ngIf="allApplications.length === 0" class="empty-state">
+              <p>No applications yet</p>
+            </div>
+            <div *ngFor="let app of allApplications" class="application-item">
+              <div class="app-header">
+                <h6 class="app-title">{{ app.eventTitle }}</h6>
+                <span class="app-status" [class]="'status-' + app.status?.toLowerCase()">
+                  {{ app.status }}
+                </span>
+              </div>
+              <p class="app-volunteer">Volunteer: {{ app.volunteerName }}</p>
+              <div class="app-actions">
+                <button 
+                  *ngIf="app.status === 'PENDING'"
+                  class="btn btn-sm btn-success"
+                  (click)="approveApplication(app.id)">
+                  Approve
+                </button>
+                <button 
+                  *ngIf="app.status === 'PENDING'"
+                  class="btn btn-sm btn-danger"
+                  (click)="rejectApplication(app.id)">
+                  Reject
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Event Form Modal -->
+    <div *ngIf="showEventForm" class="modal-overlay" (click)="closeEventForm()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h5 class="modal-title">{{ selectedEvent ? 'Edit Event' : 'Create New Event' }}</h5>
+          <button class="modal-close" (click)="closeEventForm()">×</button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="eventForm" (ngSubmit)="saveEvent()" *ngIf="eventForm">
+            <div class="form-group">
+              <label for="title">Event Title *</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="title"
+                formControlName="title"
+                placeholder="Enter event title"
+                [class.is-invalid]="submitted && $any(f['title'])?.errors">
+              <div class="invalid-feedback" *ngIf="submitted && $any(f['title'])?.errors">
+                <span *ngIf="$any(f['title'])?.errors?.['required']">Title is required</span>
+                <span *ngIf="$any(f['title'])?.errors?.['minlength']">Title must be at least 5 characters</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="description">Description *</label>
+              <textarea 
+                class="form-control" 
+                id="description"
+                formControlName="description"
+                placeholder="Enter event description"
+                rows="4"
+                [class.is-invalid]="submitted && $any(f['description'])?.errors"></textarea>
+              <div class="invalid-feedback" *ngIf="submitted && $any(f['description'])?.errors">
+                <span *ngIf="$any(f['description'])?.errors?.['required']">Description is required</span>
+                <span *ngIf="$any(f['description'])?.errors?.['minlength']">Description must be at least 20 characters</span>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="eventType">Event Type *</label>
+                <select 
+                  class="form-control" 
+                  id="eventType"
+                  formControlName="eventType"
+                  [class.is-invalid]="submitted && $any(f['eventType'])?.errors">
+                  <option value="">Select event type</option>
+                  <option value="Community Service">Community Service</option>
+                  <option value="Environmental">Environmental</option>
+                  <option value="Education">Education</option>
+                  <option value="Healthcare">Healthcare</option>
+                  <option value="Animal Care">Animal Care</option>
+                  <option value="Disaster Relief">Disaster Relief</option>
+                  <option value="Sports & Recreation">Sports & Recreation</option>
+                  <option value="Arts & Culture">Arts & Culture</option>
+                  <option value="Other">Other</option>
+                </select>
+                <div class="invalid-feedback" *ngIf="submitted && $any(f['eventType'])?.errors">
+                  Event type is required
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="location">Location *</label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="location"
+                  formControlName="location"
+                  placeholder="Enter location"
+                  [class.is-invalid]="submitted && $any(f['location'])?.errors">
+                <div class="invalid-feedback" *ngIf="submitted && $any(f['location'])?.errors">
+                  Location is required
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="eventDate">Event Date *</label>
+                <input 
+                  type="datetime-local" 
+                  class="form-control" 
+                  id="eventDate"
+                  formControlName="eventDate"
+                  [class.is-invalid]="submitted && $any(f['eventDate'])?.errors">
+                <div class="invalid-feedback" *ngIf="submitted && $any(f['eventDate'])?.errors">
+                  Event date is required
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="durationHours">Duration (hours) *</label>
+                <input 
+                  type="number" 
+                  class="form-control" 
+                  id="durationHours"
+                  formControlName="durationHours"
+                  min="1"
+                  placeholder="Enter duration"
+                  [class.is-invalid]="submitted && $any(f['durationHours'])?.errors">
+                <div class="invalid-feedback" *ngIf="submitted && $any(f['durationHours'])?.errors">
+                  Duration must be at least 1 hour
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="volunteersNeeded">Volunteers Needed *</label>
+                <input 
+                  type="number" 
+                  class="form-control" 
+                  id="volunteersNeeded"
+                  formControlName="volunteersNeeded"
+                  min="1"
+                  placeholder="Enter number of volunteers"
+                  [class.is-invalid]="submitted && $any(f['volunteersNeeded'])?.errors">
+                <div class="invalid-feedback" *ngIf="submitted && $any(f['volunteersNeeded'])?.errors">
+                  Volunteers needed must be at least 1
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="latitude">Latitude</label>
+                <input 
+                  type="number" 
+                  class="form-control" 
+                  id="latitude"
+                  formControlName="latitude"
+                  step="0.000001"
+                  placeholder="e.g., 25.2048">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="longitude">Longitude</label>
+              <input 
+                type="number" 
+                class="form-control" 
+                id="longitude"
+                formControlName="longitude"
+                step="0.000001"
+                placeholder="e.g., 55.2708">
+            </div>
+
+            <div class="form-group">
+              <label for="imageUrl">Image URL</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="imageUrl"
+                formControlName="imageUrl"
+                placeholder="Enter image URL">
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" (click)="closeEventForm()">
+                Cancel
+              </button>
+              <button type="submit" class="btn btn-primary" [disabled]="loading">
+                {{ loading ? 'Saving...' : (selectedEvent ? 'Update Event' : 'Create Event') }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

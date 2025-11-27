@@ -1,0 +1,207 @@
+<!-- Modal Backdrop -->
+<div *ngIf="isOpen" class="modal-backdrop fade show" (click)="closeModal()"></div>
+
+<!-- Modal -->
+<div *ngIf="isOpen" class="modal fade show d-block" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h5 class="modal-title">
+          {{ event ? '✏️ Edit Event' : '➕ Create New Event' }}
+        </h5>
+        <button 
+          type="button" 
+          class="btn-close" 
+          (click)="closeModal()"
+          [disabled]="loading"
+        ></button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="modal-body">
+        <!-- Error Alert -->
+        <div *ngIf="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+          {{ error }}
+          <button type="button" class="btn-close" (click)="error = ''"></button>
+        </div>
+
+        <!-- Form -->
+        <form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
+          <!-- Title -->
+          <div class="mb-3">
+            <label for="title" class="form-label">Event Title *</label>
+            <input 
+              type="text" 
+              class="form-control"
+              id="title"
+              formControlName="title"
+              [class.is-invalid]="submitted && f['title']?.errors"
+              placeholder="Enter event title"
+            >
+            <div *ngIf="submitted && f['title']?.errors" class="invalid-feedback d-block">
+              {{ getErrorMessage('title') }}
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div class="mb-3">
+            <label for="description" class="form-label">Description *</label>
+            <textarea 
+              class="form-control"
+              id="description"
+              formControlName="description"
+              [class.is-invalid]="submitted && f['description']?.errors"
+              rows="4"
+              placeholder="Enter event description"
+            ></textarea>
+            <div *ngIf="submitted && f['description']?.errors" class="invalid-feedback d-block">
+              {{ getErrorMessage('description') }}
+            </div>
+          </div>
+
+          <!-- Event Type -->
+          <div class="mb-3">
+            <label for="eventType" class="form-label">Event Type *</label>
+            <select 
+              class="form-select"
+              id="eventType"
+              formControlName="eventType"
+              [class.is-invalid]="submitted && f['eventType']?.errors"
+            >
+              <option value="">Select event type</option>
+              <option *ngFor="let type of eventTypes" [value]="type">{{ type }}</option>
+            </select>
+            <div *ngIf="submitted && f['eventType']?.errors" class="invalid-feedback d-block">
+              {{ getErrorMessage('eventType') }}
+            </div>
+          </div>
+
+          <!-- Location -->
+          <div class="mb-3">
+            <label for="location" class="form-label">Location *</label>
+            <input 
+              type="text" 
+              class="form-control"
+              id="location"
+              formControlName="location"
+              [class.is-invalid]="submitted && f['location']?.errors"
+              placeholder="Enter event location"
+            >
+            <div *ngIf="submitted && f['location']?.errors" class="invalid-feedback d-block">
+              {{ getErrorMessage('location') }}
+            </div>
+          </div>
+
+          <!-- Coordinates Row -->
+          <div class="row">
+            <!-- Latitude -->
+            <div class="col-md-6 mb-3">
+              <label for="latitude" class="form-label">Latitude *</label>
+              <input 
+                type="number" 
+                class="form-control"
+                id="latitude"
+                formControlName="latitude"
+                [class.is-invalid]="submitted && f['latitude']?.errors"
+                placeholder="-90 to 90"
+                step="0.000001"
+              >
+              <div *ngIf="submitted && f['latitude']?.errors" class="invalid-feedback d-block">
+                {{ getErrorMessage('latitude') }}
+              </div>
+            </div>
+
+            <!-- Longitude -->
+            <div class="col-md-6 mb-3">
+              <label for="longitude" class="form-label">Longitude *</label>
+              <input 
+                type="number" 
+                class="form-control"
+                id="longitude"
+                formControlName="longitude"
+                [class.is-invalid]="submitted && f['longitude']?.errors"
+                placeholder="-180 to 180"
+                step="0.000001"
+              >
+              <div *ngIf="submitted && f['longitude']?.errors" class="invalid-feedback d-block">
+                {{ getErrorMessage('longitude') }}
+              </div>
+            </div>
+          </div>
+
+          <!-- Event Date -->
+          <div class="mb-3">
+            <label for="eventDate" class="form-label">Event Date *</label>
+            <input 
+              type="datetime-local" 
+              class="form-control"
+              id="eventDate"
+              formControlName="eventDate"
+              [class.is-invalid]="submitted && f['eventDate']?.errors"
+            >
+            <div *ngIf="submitted && f['eventDate']?.errors" class="invalid-feedback d-block">
+              {{ getErrorMessage('eventDate') }}
+            </div>
+          </div>
+
+          <!-- Volunteers & Duration Row -->
+          <div class="row">
+            <!-- Volunteers Needed -->
+            <div class="col-md-6 mb-3">
+              <label for="volunteersNeeded" class="form-label">Volunteers Needed *</label>
+              <input 
+                type="number" 
+                class="form-control"
+                id="volunteersNeeded"
+                formControlName="volunteersNeeded"
+                [class.is-invalid]="submitted && f['volunteersNeeded']?.errors"
+                min="1"
+              >
+              <div *ngIf="submitted && f['volunteersNeeded']?.errors" class="invalid-feedback d-block">
+                {{ getErrorMessage('volunteersNeeded') }}
+              </div>
+            </div>
+
+            <!-- Duration Hours -->
+            <div class="col-md-6 mb-3">
+              <label for="durationHours" class="form-label">Duration (Hours) *</label>
+              <input 
+                type="number" 
+                class="form-control"
+                id="durationHours"
+                formControlName="durationHours"
+                [class.is-invalid]="submitted && f['durationHours']?.errors"
+                min="1"
+              >
+              <div *ngIf="submitted && f['durationHours']?.errors" class="invalid-feedback d-block">
+                {{ getErrorMessage('durationHours') }}
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="modal-footer">
+        <button 
+          type="button" 
+          class="btn btn-secondary"
+          (click)="closeModal()"
+          [disabled]="loading"
+        >
+          Cancel
+        </button>
+        <button 
+          type="button" 
+          class="btn btn-primary"
+          (click)="onSubmit()"
+          [disabled]="loading"
+        >
+          <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+          {{ loading ? 'Saving...' : (event ? 'Update Event' : 'Create Event') }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

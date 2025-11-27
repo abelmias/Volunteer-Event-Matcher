@@ -1,0 +1,513 @@
+/* ============================================
+   GLOBAL BOOTSTRAP OVERRIDES & THEME APPLICATION
+   ============================================ */
+
+/* Ensure dark background everywhere */
+body,
+html,
+app-root,
+.container,
+.container-fluid {
+  background: var(--bg-dark-primary) !important;
+  color: var(--text-muted) !important;
+}
+
+main,
+.main-content,
+[role="main"] {
+  background: var(--bg-dark-primary) !important;
+}
+
+/* ============================================
+   NAVBAR STYLING
+   ============================================ */
+
+.navbar {
+  background: var(--gradient-dark) !important;
+  box-shadow: var(--shadow-lg) !important;
+  border-bottom: 1px solid rgba(255, 107, 53, 0.1) !important;
+  backdrop-filter: blur(10px);
+}
+
+.navbar-brand {
+  font-size: 1.5rem !important;
+  font-weight: 700 !important;
+  color: var(--text-white) !important;
+  letter-spacing: 1px !important;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: var(--text-muted) !important;
+  font-weight: 600 !important;
+  transition: var(--transition-normal) !important;
+  position: relative;
+}
+
+.navbar-dark .navbar-nav .nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--accent-primary);
+  transition: var(--transition-normal);
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+  color: var(--accent-primary) !important;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover::after {
+  width: 100%;
+}
+
+/* ============================================
+   BUTTONS - BOOTSTRAP OVERRIDES
+   ============================================ */
+
+.btn-primary {
+  background: var(--gradient-primary) !important;
+  border: none !important;
+  box-shadow: var(--shadow-md) !important;
+  font-weight: 600 !important;
+  transition: var(--transition-normal) !important;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, var(--accent-primary-hover) 0%, #FF9966 100%) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: var(--shadow-lg), var(--shadow-glow) !important;
+}
+
+.btn-primary:active {
+  transform: translateY(0) !important;
+}
+
+.btn-secondary {
+  background: var(--bg-light) !important;
+  color: var(--text-dark) !important;
+  border: 1px solid var(--bg-light-grey) !important;
+  font-weight: 600 !important;
+  transition: var(--transition-normal) !important;
+}
+
+.btn-secondary:hover {
+  background: var(--bg-light-alt) !important;
+  border-color: var(--accent-primary) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: var(--shadow-md) !important;
+}
+
+.btn-outline-primary {
+  color: var(--accent-primary) !important;
+  border: 2px solid var(--accent-primary) !important;
+  font-weight: 600 !important;
+  transition: var(--transition-normal) !important;
+}
+
+.btn-outline-primary:hover {
+  background: var(--accent-primary) !important;
+  color: white !important;
+  transform: translateY(-2px) !important;
+}
+
+.btn-lg {
+  padding: 0.75rem 2rem !important;
+  font-size: 1.1rem !important;
+  border-radius: 10px !important;
+}
+
+.btn-sm {
+  padding: 0.4rem 1rem !important;
+  font-size: 0.9rem !important;
+  border-radius: 8px !important;
+}
+
+/* ============================================
+   CARDS
+   ============================================ */
+
+.card {
+  background: var(--bg-dark-secondary) !important;
+  border: 1px solid rgba(255, 107, 53, 0.1) !important;
+  border-radius: 16px !important;
+  box-shadow: var(--shadow-md) !important;
+  transition: var(--transition-normal) !important;
+}
+
+.card:hover {
+  transform: translateY(-8px) !important;
+  box-shadow: var(--shadow-lg) !important;
+  border-color: rgba(255, 107, 53, 0.3) !important;
+}
+
+.card-header {
+  background: rgba(255, 107, 53, 0.1) !important;
+  border-bottom: 1px solid rgba(255, 107, 53, 0.2) !important;
+  color: var(--text-white) !important;
+  font-weight: 600 !important;
+}
+
+.card-body {
+  color: var(--text-muted) !important;
+}
+
+.card-title {
+  color: var(--text-white) !important;
+  font-weight: 700 !important;
+}
+
+.card-text {
+  color: var(--text-muted) !important;
+}
+
+/* Light Cards */
+.card.bg-light {
+  background: var(--bg-light) !important;
+  border: 1px solid var(--bg-light-grey) !important;
+}
+
+.card.bg-light .card-header {
+  background: var(--bg-light-alt) !important;
+  color: var(--text-dark) !important;
+}
+
+.card.bg-light .card-title {
+  color: var(--text-dark) !important;
+}
+
+.card.bg-light .card-text {
+  color: var(--text-dark-secondary) !important;
+}
+
+/* ============================================
+   FORMS
+   ============================================ */
+
+.form-control,
+.form-select {
+  background: var(--bg-dark-secondary) !important;
+  color: var(--text-white) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 10px !important;
+  transition: var(--transition-normal) !important;
+}
+
+.form-control:focus,
+.form-select:focus {
+  background: var(--bg-dark-secondary) !important;
+  color: var(--text-white) !important;
+  border-color: var(--accent-primary) !important;
+  box-shadow: 0 0 0 0.2rem rgba(255, 107, 53, 0.25) !important;
+}
+
+.form-control::placeholder {
+  color: var(--text-muted) !important;
+}
+
+.form-label {
+  color: var(--text-white) !important;
+  font-weight: 600 !important;
+}
+
+/* ============================================
+   BADGES
+   ============================================ */
+
+.badge {
+  padding: 0.5rem 0.75rem !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  font-size: 0.85rem !important;
+}
+
+.badge-primary {
+  background: var(--gradient-primary) !important;
+  color: white !important;
+}
+
+.badge-secondary {
+  background: rgba(255, 107, 53, 0.2) !important;
+  color: var(--accent-primary) !important;
+}
+
+.badge-success {
+  background: rgba(16, 185, 129, 0.2) !important;
+  color: #10B981 !important;
+}
+
+.badge-danger {
+  background: rgba(239, 68, 68, 0.2) !important;
+  color: #EF4444 !important;
+}
+
+.badge-warning {
+  background: rgba(245, 158, 11, 0.2) !important;
+  color: #F59E0B !important;
+}
+
+/* ============================================
+   ALERTS
+   ============================================ */
+
+.alert {
+  border-radius: 12px !important;
+  border-left: 4px solid !important;
+  padding: 1rem 1.5rem !important;
+}
+
+.alert-success {
+  background: rgba(16, 185, 129, 0.1) !important;
+  color: #10B981 !important;
+  border-left-color: #10B981 !important;
+}
+
+.alert-danger {
+  background: rgba(239, 68, 68, 0.1) !important;
+  color: #EF4444 !important;
+  border-left-color: #EF4444 !important;
+}
+
+.alert-warning {
+  background: rgba(245, 158, 11, 0.1) !important;
+  color: #F59E0B !important;
+  border-left-color: #F59E0B !important;
+}
+
+.alert-info {
+  background: rgba(59, 130, 246, 0.1) !important;
+  color: #3B82F6 !important;
+  border-left-color: #3B82F6 !important;
+}
+
+/* ============================================
+   TABLES
+   ============================================ */
+
+.table {
+  color: var(--text-muted) !important;
+}
+
+.table-dark {
+  background: var(--bg-dark-secondary) !important;
+}
+
+.table-dark thead th {
+  background: rgba(255, 107, 53, 0.1) !important;
+  color: var(--text-white) !important;
+  border-color: rgba(255, 107, 53, 0.2) !important;
+  font-weight: 600 !important;
+}
+
+.table-dark tbody tr {
+  border-color: rgba(255, 107, 53, 0.1) !important;
+}
+
+.table-dark tbody tr:hover {
+  background: rgba(255, 107, 53, 0.05) !important;
+}
+
+/* ============================================
+   PAGINATION
+   ============================================ */
+
+.pagination {
+  gap: 0.5rem;
+}
+
+.page-link {
+  background: var(--bg-dark-secondary) !important;
+  color: var(--text-muted) !important;
+  border: 1px solid rgba(255, 107, 53, 0.1) !important;
+  border-radius: 8px !important;
+  transition: var(--transition-normal) !important;
+}
+
+.page-link:hover {
+  background: var(--accent-primary) !important;
+  color: white !important;
+  border-color: var(--accent-primary) !important;
+}
+
+.page-item.active .page-link {
+  background: var(--gradient-primary) !important;
+  border-color: var(--accent-primary) !important;
+}
+
+/* ============================================
+   MODALS
+   ============================================ */
+
+.modal-content {
+  background: var(--bg-dark-secondary) !important;
+  border: 1px solid rgba(255, 107, 53, 0.1) !important;
+  border-radius: 16px !important;
+}
+
+.modal-header {
+  background: rgba(255, 107, 53, 0.1) !important;
+  border-bottom: 1px solid rgba(255, 107, 53, 0.2) !important;
+  color: var(--text-white) !important;
+}
+
+.modal-title {
+  color: var(--text-white) !important;
+  font-weight: 700 !important;
+}
+
+.btn-close {
+  filter: invert(1) !important;
+}
+
+/* ============================================
+   DROPDOWNS
+   ============================================ */
+
+.dropdown-menu {
+  background: var(--bg-dark-secondary) !important;
+  border: 1px solid rgba(255, 107, 53, 0.1) !important;
+  border-radius: 12px !important;
+  box-shadow: var(--shadow-lg) !important;
+}
+
+.dropdown-item {
+  color: var(--text-muted) !important;
+  transition: var(--transition-normal) !important;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+  background: rgba(255, 107, 53, 0.1) !important;
+  color: var(--accent-primary) !important;
+}
+
+.dropdown-divider {
+  border-color: rgba(255, 107, 53, 0.1) !important;
+}
+
+/* ============================================
+   TABS & PILLS
+   ============================================ */
+
+.nav-tabs {
+  border-bottom: 2px solid rgba(255, 107, 53, 0.1) !important;
+}
+
+.nav-tabs .nav-link {
+  color: var(--text-muted) !important;
+  border: none !important;
+  border-bottom: 3px solid transparent !important;
+  font-weight: 600 !important;
+  transition: var(--transition-normal) !important;
+}
+
+.nav-tabs .nav-link:hover {
+  color: var(--accent-primary) !important;
+  border-bottom-color: var(--accent-primary) !important;
+}
+
+.nav-tabs .nav-link.active {
+  background: transparent !important;
+  color: var(--accent-primary) !important;
+  border-bottom-color: var(--accent-primary) !important;
+}
+
+.nav-pills .nav-link {
+  background: rgba(255, 107, 53, 0.1) !important;
+  color: var(--accent-primary) !important;
+  border-radius: 10px !important;
+  transition: var(--transition-normal) !important;
+}
+
+.nav-pills .nav-link:hover {
+  background: var(--gradient-primary) !important;
+  color: white !important;
+}
+
+.nav-pills .nav-link.active {
+  background: var(--gradient-primary) !important;
+  color: white !important;
+}
+
+/* ============================================
+   PROGRESS BARS
+   ============================================ */
+
+.progress {
+  background: rgba(255, 107, 53, 0.1) !important;
+  border-radius: 10px !important;
+  height: 8px !important;
+}
+
+.progress-bar {
+  background: var(--gradient-primary) !important;
+}
+
+/* ============================================
+   SPINNERS & LOADERS
+   ============================================ */
+
+.spinner-border {
+  color: var(--accent-primary) !important;
+}
+
+.spinner-grow {
+  background: var(--accent-primary) !important;
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+.text-primary {
+  color: var(--accent-primary) !important;
+}
+
+.text-secondary {
+  color: var(--text-muted) !important;
+}
+
+.text-muted {
+  color: var(--text-muted) !important;
+}
+
+.bg-primary {
+  background: var(--gradient-primary) !important;
+}
+
+.bg-secondary {
+  background: var(--bg-dark-secondary) !important;
+}
+
+.bg-light {
+  background: var(--bg-light) !important;
+}
+
+.bg-dark {
+  background: var(--bg-dark-primary) !important;
+}
+
+.border-primary {
+  border-color: var(--accent-primary) !important;
+}
+
+/* ============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================ */
+
+@media (max-width: 768px) {
+  .navbar-brand {
+    font-size: 1.2rem !important;
+  }
+
+  .btn {
+    padding: 0.6rem 1.2rem !important;
+    font-size: 0.9rem !important;
+  }
+
+  .card {
+    border-radius: 12px !important;
+    padding: 1rem !important;
+  }
+}

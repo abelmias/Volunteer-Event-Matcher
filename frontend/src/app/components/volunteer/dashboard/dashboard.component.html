@@ -1,0 +1,222 @@
+<div class="volunteer-dashboard-container">
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a class="navbar-brand" href="javascript:void(0)">Voluntra</a>
+      <div class="navbar-links">
+        <a class="nav-btn" href="javascript:void(0)" (click)="editProfile()">Profile</a>
+        <a class="nav-btn" href="javascript:void(0)" (click)="logout()">Logout</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Welcome Section -->
+  <div class="welcome-section">
+    <div class="welcome-container">
+      <div class="welcome-content">
+        <h1 class="welcome-title">Welcome, {{ currentUser?.firstName }}! 👋</h1>
+        <p class="welcome-subtitle">Volunteer Dashboard</p>
+        <p class="welcome-description">Track your volunteer journey and discover new opportunities</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Statistics Cards - Hidden for now -->
+  <!-- Stats will be displayed once data is functional -->
+
+  <!-- Main Content -->
+  <div class="dashboard-container">
+    <div class="row">
+      <!-- Applications Section -->
+      <div class="col-lg-8">
+        <div class="card shadow-sm border-0">
+          <div class="card-header border-bottom">
+            <h5 class="mb-0">My Applications</h5>
+          </div>
+          <div class="card-body p-0">
+            <!-- Tab Navigation -->
+            <ul class="nav nav-tabs" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link" [class.active]="activeTab === 'all'" href="javascript:void(0)" (click)="activeTab = 'all'">
+                  All ({{ applications.length }})
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" [class.active]="activeTab === 'pending'" href="javascript:void(0)" (click)="activeTab = 'pending'">
+                  Pending ({{ pendingApplications }})
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" [class.active]="activeTab === 'approved'" href="javascript:void(0)" (click)="activeTab = 'approved'">
+                  Approved
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" [class.active]="activeTab === 'completed'" href="javascript:void(0)" (click)="activeTab = 'completed'">
+                  Completed ({{ eventsCompleted }})
+                </a>
+              </li>
+            </ul>
+
+            <!-- Applications List -->
+            <div class="applications-list">
+              <div *ngIf="loading" class="text-center py-5">
+                <div class="spinner-border" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              </div>
+
+              <div *ngIf="!loading && getFilteredApplications().length === 0" class="empty-state">
+                <div class="empty-state-icon">🎯</div>
+                <h6 class="empty-state-title">You haven't applied yet</h6>
+                <p class="empty-state-message">Start by exploring events and find opportunities that match your interests!</p>
+                <button class="btn btn-primary" (click)="browseMoreEvents()">Explore Events</button>
+              </div>
+
+              <div *ngFor="let app of getFilteredApplications()" class="application-item border-bottom p-3">
+                <div class="row align-items-center">
+                  <div class="col-md-8">
+                    <div class="d-flex align-items-start gap-3">
+                      <div class="status-badge">
+                        <span class="badge bg-{{ getStatusColor(app.status) }} p-2">
+                          {{ getStatusIcon(app.status) }} {{ app.status }}
+                        </span>
+                      </div>
+                      <div class="flex-grow-1">
+                        <h6 class="mb-1">
+                          <a href="javascript:void(0)" (click)="viewEventDetails(app.eventId)" class="text-decoration-none">
+                            {{ app.eventTitle }}
+                          </a>
+                        </h6>
+                        <small class="text-muted d-block">Applied: {{ formatDate(app.applicationDate) }}</small>
+                        <div *ngIf="app.hoursCompleted" class="mt-2">
+                          <small class="text-success">
+                            <strong>Hours Completed:</strong> {{ app.hoursCompleted }}
+                          </small>
+                        </div>
+                        <div *ngIf="app.ratingFromOrganizer" class="mt-2">
+                          <small class="text-warning">
+                            <strong>Rating:</strong> {{ app.ratingFromOrganizer }}/5 ⭐
+                          </small>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4 text-end">
+                    <button 
+                      class="btn btn-sm btn-outline-primary me-2"
+                      (click)="viewEventDetails(app.eventId)"
+                    >
+                      View Event
+                    </button>
+                    <button 
+                      *ngIf="app.status === 'PENDING'"
+                      class="btn btn-sm btn-outline-danger"
+                      (click)="withdrawApplication(app.id)"
+                    >
+                      Withdraw
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="col-lg-4">
+        <!-- Event Cart Section -->
+        <div class="card shadow-sm border-0 mb-4">
+          <div class="card-header border-bottom">
+            <h5 class="mb-0">Event Cart ({{ cartEvents.length }})</h5>
+          </div>
+          <div class="card-body p-0">
+            <div *ngIf="cartEvents.length === 0" class="empty-state p-3">
+              <div class="empty-state-icon">🛒</div>
+              <h6 class="empty-state-title">Your cart is empty</h6>
+              <p class="empty-state-message">Save events for later to review them here</p>
+            </div>
+
+            <div *ngFor="let event of cartEvents" class="cart-item border-bottom p-3">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <h6 class="mb-0">
+                  <a href="javascript:void(0)" (click)="viewEventDetails(event.id)" class="text-decoration-none">
+                    {{ event.title }}
+                  </a>
+                </h6>
+                <button 
+                  class="btn btn-sm btn-outline-danger"
+                  (click)="removeFromCart(event.id)"
+                  title="Remove from cart"
+                >
+                  ✕
+                </button>
+              </div>
+              <small class="text-muted d-block mb-2">{{ event.location }}</small>
+              <small class="text-muted d-block mb-3">{{ formatDate(event.date) }}</small>
+              <button 
+                class="btn btn-sm btn-primary w-100"
+                (click)="applyFromCart(event.id)"
+              >
+                Apply Now
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="card shadow-sm border-0 mb-4">
+          <div class="card-header border-bottom">
+            <h5 class="mb-0">Quick Actions</h5>
+          </div>
+          <div class="card-body">
+            <button class="btn btn-primary w-100 mb-2" (click)="browseMoreEvents()">
+              Browse More Events
+            </button>
+            <button class="btn btn-outline-primary w-100" (click)="submitEvent()">
+              Submit Event
+            </button>
+          </div>
+        </div>
+
+        <!-- Progress Section -->
+        <div class="card shadow-sm border-0 mb-4">
+          <div class="card-header border-bottom">
+            <h5 class="mb-0">Your Progress</h5>
+          </div>
+          <div class="card-body">
+            <div class="progress-item mb-3">
+              <div class="progress-header">
+                <label class="progress-label">Volunteer Journey</label>
+                <span class="progress-percentage">{{ progressPercentage }}% Complete</span>
+              </div>
+              <div class="progress" role="progressbar" [attr.aria-valuenow]="progressPercentage" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar" [style.width.%]="progressPercentage"></div>
+              </div>
+              <p class="progress-message">Keep exploring events to grow your volunteer experience!</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Notifications -->
+        <div class="card shadow-sm border-0">
+          <div class="card-header border-bottom">
+            <h5 class="mb-0">Recent Notifications <span *ngIf="hasNewNotifications" class="notification-badge">●</span></h5>
+          </div>
+          <div class="card-body p-0">
+            <div *ngIf="notifications.length === 0" class="empty-notifications">
+              <div class="notification-icon">🔔</div>
+              <p class="notification-empty-title">You're all caught up!</p>
+              <p class="notification-empty-message">No new notifications at the moment</p>
+            </div>
+            <div *ngFor="let notif of notifications" class="notification-item border-bottom p-3">
+              <p class="mb-1 small">{{ notif.message }}</p>
+              <small class="text-muted">{{ formatDate(notif.createdAt) }}</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
